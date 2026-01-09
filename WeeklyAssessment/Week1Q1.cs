@@ -31,11 +31,7 @@ public class Tester{
     static void Main(String[] args){
         Console.WriteLine("Employee Type('I' for Intern and 'M' for Manager): ");
         string empTypeInput = Console.ReadLine();
-        
-        // Check for null or empty input
-       
-        
-        char empType = empTypeInput[0];  // Get first character
+        char empType = empTypeInput[0];  
         
         Console.WriteLine("Name: ");
         string name = Console.ReadLine();
@@ -50,7 +46,6 @@ public class Tester{
            
             int intPeriod = int.Parse(periodInput);
             
-            // Create Intern object
             Intern intern = new Intern{
                 Name = name,
                 Department = dept,
