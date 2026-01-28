@@ -1,1 +1,8 @@
 @model StudentManager.Models.Student
+
+<form asp-action="Add" method="post">
+    <input asp-for="@Model.StudentName" placeholder="Name" />
+    <input asp-for="@Model.Age" placeholder="Age" />
+    <input asp-for="@Model.Email" placeholder="Email" />
+    <button type="submit">Add</button>
+</form>

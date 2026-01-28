@@ -1,0 +1,6 @@
+@model IEnumerable<StudentManager.Models.Student>
+
+@foreach(var s in Model)
+{
+    <div>@s.StudentId : @s.StudentName : @s.Age : @s.Email</div>
+}

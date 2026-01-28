@@ -1,5 +1,10 @@
 using System.ComponentModel.Design;
 using StudentManager.Models;
+using Microsoft.AspNetCore.Mvc;
+
+
+namespace StudentManager.Controllers
+{
 
 public class StudentController : Controller
 {
@@ -8,7 +13,7 @@ public class StudentController : Controller
 
     public ActionResult ShowAll()
     {
-        return ViewTechnology(list);
+        return View(list);
     }
 
     // Add (GET)
@@ -20,6 +25,7 @@ public class StudentController : Controller
 
 
     // Add (POST)
+    [HttpPost]
     public ActionResult Add(Student std)
     {
         if (ModelState.IsValid)
@@ -31,4 +37,5 @@ public class StudentController : Controller
         return View();
     }
 
+}
 }

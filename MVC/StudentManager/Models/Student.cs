@@ -1,5 +1,9 @@
 using System.ComponentModel.DataAnnotations;
 
+
+namespace StudentManager.Models
+{
+
 public class Student
 {
     [Key]
@@ -7,7 +11,7 @@ public class Student
     public int StudentId {get; set;}
 
     [Required]
-    public string StudentName{get; set;}
+    public string StudentName{get; set;} = "";
 
     [Required]
     [Range(5,100,ErrorMessage ="Age must be between 5 to 100")]
@@ -15,5 +19,6 @@ public class Student
 
     [Required]
     [EmailAddress]
-    public string Email{get; set;}
+    public string Email{get; set;} = "";
+}
 }
