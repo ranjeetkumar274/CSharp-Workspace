@@ -1,22 +1,26 @@
 ## sqlcmd -S locaalhost.database.windows.net -d appdb -U CloudSAcbd8209c -P Ashu@123 -C
 
 
-```
 ├── 📁 Controllers
-│   ├── 📄 EmployeeController.cs
-│   └── 📄 HomeController.cs
+│   ├── 📄 HomeController.cs
+│   └── 📄 ProductController.cs
+├── 📁 Migrations
+│   ├── 📄 20260130175502_InitialCreate.Designer.cs
+│   ├── 📄 20260130175502_InitialCreate.cs
+│   └── 📄 ProductDbContextModelSnapshot.cs
 ├── 📁 Models
-│   ├── 📄 Employee.cs
-│   └── 📄 ErrorViewModel.cs
+│   ├── 📄 ErrorViewModel.cs
+│   ├── 📄 Product.cs
+│   └── 📄 ProductDbContext.cs
 ├── 📁 Properties
 │   └── ⚙️ launchSettings.json
 ├── 📁 Views
-│   ├── 📁 Employee
-│   │   ├── 📄 Add.cshtml
-│   │   └── 📄 ShowAll.cshtml
 │   ├── 📁 Home
 │   │   ├── 📄 Index.cshtml
 │   │   └── 📄 Privacy.cshtml
+│   ├── 📁 Product
+│   │   ├── 📄 Create.cshtml
+│   │   └── 📄 Show.cshtml
 │   ├── 📁 Shared
 │   │   ├── 📄 Error.cshtml
 │   │   ├── 📄 _Layout.cshtml
@@ -39,7 +43,7 @@
 │   │   └── 📁 jquery-validation-unobtrusive
 │   │       └── 📄 LICENSE.txt
 │   └── 📄 favicon.ico
-├── 📄 EmployeeManager.csproj
+├── 📄 ProductManager.csproj
 ├── 📄 Program.cs
 ├── ⚙️ appsettings.Development.json
 └── ⚙️ appsettings.json

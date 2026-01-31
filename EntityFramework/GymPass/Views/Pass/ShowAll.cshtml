@@ -1,0 +1,5 @@
+@model List<GymPass.Models.Pass>
+
+@foreach(var v in Model){
+    <p>@v.PassId : @v.Name : @v.PassNumber : @v.Holder</p>
+}

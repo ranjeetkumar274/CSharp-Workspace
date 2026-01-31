@@ -1,0 +1,8 @@
+@model GymPass.Models.Pass
+
+<form asp-action="Add" method="post">
+    <input asp-for="@Model.Name" placeholder="Enter Name"/>
+    <input asp-for="@Model.PassNumber" placeholder="Enter Name"/>
+    <input asp-for="@Model.Holder" placeholder="Enter Name"/>
+    <button type="submit">Submit</button>
+</form>
