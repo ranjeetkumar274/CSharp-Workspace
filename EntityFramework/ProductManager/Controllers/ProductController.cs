@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
 using ProductManager.Models;
-namespace ProductManager.controllers
+
+
+namespace ProductManager.Controllers
 {
     public class ProductController : Controller
     {
@@ -11,11 +13,6 @@ namespace ProductManager.controllers
         {
             cont = context;
         }
-        public ActionResult Index()
-        {
-            var products = cont.Products.ToList();
-            return View(products);
-        }
 
         public IActionResult Create()
         {
@@ -24,7 +21,8 @@ namespace ProductManager.controllers
 
         public IActionResult Show()
         {
-            return RedirectToAction("Index");
+            var products = cont.Products.ToList();
+            return View(products);
         }
 
         [HttpPost]
@@ -34,7 +32,7 @@ namespace ProductManager.controllers
             {
                 cont.Products.Add(p);
                 cont.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Show");
             }
             return View(p);
         }

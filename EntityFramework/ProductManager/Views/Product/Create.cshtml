@@ -1,7 +1,6 @@
 @model ProductManager.Models.Product
 
 <form asp-action="Create" method="post">
-    <input asp-for="@Model.ProductId" placeholder="ID" />
     <input asp-for="@Model.Name" placeholder="Name" />
     <input asp-for="@Model.Price" placeholder="Price" />
     <button type="submit">Add</button>
