@@ -1,0 +1,356 @@
+// LibraryController.cs
+
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+using System.Runtime.InteropServices;
+using System.Threading.Tasks;
+using dotnetapp.Models;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+using Microsoft.EntityFrameworkCore;
+namespace dotnetapp.Controllers
+{
+    // [Route("[controller]")]
+    public class LibraryController : Controller
+    {
+        AppDbContext _context;
+        public LibraryController(AppDbContext db1){_context=db1;}
+        public IActionResult DisplayAllBooks()
+        {
+            var res = _context.Books.Include(b=> b.LibraryCard).ToList();
+            return View();
+        }
+        public IActionResult DisplayBooksForLibraryCard(int libraryCardId)
+        {
+            var res = _context.Books.FirstOrDefault(b=> b.LibraryCardId == libraryCardId);
+            return View(res);
+        }
+        public IActionResult SearchBooksByTitle(string query)
+        {
+            var res = _context.Books.FirstOrDefault(b=> b.Title.ToLower() == query);
+            return View(res);
+        }
+        public IActionResult AddBook()
+        {
+
+    return View();
+        }
+        public IActionResult AddBook(Book book)
+        {
+            _context.Books.Add(book);
+            _context.SaveChanges();
+            return RedirectToAction("DisplayAllBooks");
+        }
+        public IActionResult DeleteBook(int id)
+        {
+            var res = _context.Books.FirstOrDefault(b=> b.Id == id);
+            if(res!=null)
+            {
+                _context.Books.Remove(res);
+                _context.SaveChanges();
+                return RedirectToAction("DisplayAllBooks");
+            }
+            return NotFound();
+        }
+    }
+}
+
+
+
+
+// AppDbContext.cs
+
+using Microsoft.EntityFrameworkCore;
+namespace dotnetapp.Models
+{
+    public class AppDbContext : DbContext
+    {
+        public DbSet<Book> Books { get; set; }
+        public DbSet<LibraryCard>LibraryCards { get; set; }
+        public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
+        protected override void OnModelCreating(ModelBuilder m)
+        {
+            m.Entity<Book>().
+            HasOne(b => b.LibraryCard).
+            WithMany(l => l.Books).
+            HasForeignKey(lb => lb.LibraryCardId).
+            IsRequired(false);
+
+    m.Entity<LibraryCard>().HasData
+                                (
+                                        new LibraryCard
+                                        {
+                                            Id = 1,
+                                            CardNumber = "LC-12345",
+                                            MemberName = "John Doe",
+                                            ExpiryDate = new DateTime(2025, 12, 31)
+                                        },
+                                        new LibraryCard
+                                        {
+                                            Id = 2,
+                                            CardNumber = "LC-54321",
+                                            MemberName = "Jane Smith",
+                                            ExpiryDate = new DateTime(2024, 10, 15)
+                                        }
+                );
+        }
+    }
+}
+
+
+// Book.cs
+
+using System.ComponentModel.DataAnnotations;
+
+namespace dotnetapp.Models
+{
+    public class Book
+    {
+        public int Id{get;set;}
+        [Required]
+        [StringLength(100)]
+        public string Title{get;set;}
+        [Required]
+        [StringLength(50)]
+        public string Author{get;set;}
+        [Required]
+        [Range(1000,2024)]
+        public int PublishedYear{get;set;}
+        public int? LibraryCardId{get;set;}
+
+    public LibraryCard LibraryCard {get; set;}
+    }
+}
+
+
+// ḶibraryCard.cs
+
+using System;
+using System.Collections;
+using System.ComponentModel.DataAnnotations;
+namespace dotnetapp.Models
+{
+    public class LibraryCard
+    {
+        public int? Id{get;set;}
+        [Required]
+        [RegularExpression(@"LC-\d{5}")]
+        public string CardNumber{get;set;}
+        [Required]
+        [StringLength(50)]
+        public string MemberName{get;set;}
+        [Required]
+        [DataType(DataType.DateTime)]
+        public DateTime ExpiryDate{get;set;}
+        public ICollection <Book> Books{get;set;}
+    }
+}
+
+
+// AddBook.cshtml
+
+@model dotnetapp.Models.Book
+
+<h2>Add New Book</h2>
+
+<form asp-action="AddBook" method="post">
+    <div class="form-group">
+        <label asp-for="Title" class="control-label">Title:</label>
+        <input asp-for="Title" class="form-control" />
+        <span asp-validation-for="Title" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Author" class="control-label">Author:</label>
+        <input asp-for="Author" class="form-control" />
+        <span asp-validation-for="Author" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="PublishedYear" class="control-label">Published Year:</label>
+        <input asp-for="PublishedYear" class="form-control" />
+        <span asp-validation-for="PublishedYear" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="LibraryCardId" class="control-label">LibraryCardId:</label>
+        <input asp-for="LibraryCardId" class="form-control" />
+        <span asp-validation-for="LibraryCardId" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-primary">Add Book</button>
+</form>
+
+
+
+// DisplayAllBooks.cshml
+
+@* @model List<dotnetapp.Models.Book>
+
+<p>
+    <a asp-action="AddBook" class="btn btn-primary">Add Book</a>
+</p>
+
+<form asp-controller="Library" asp-action="SearchBooksByTitle" method="post" >
+    <div class="form-group">
+        <label for="searchQuery">Search by Title:</label>
+        <div class="button-container">
+            <input type="text" id="searchQuery" name="query" class="form-control textfield" />
+            <button type="submit" class="btn btn-primary">Search</button>
+        </div>
+    </div>
+</form>
+
+<div class="button-containers">
+<form asp-controller="Library" asp-action="DisplayBooksForLibraryCard" method="get">
+    <input type="hidden" name="libraryCardId" value="1" />
+    <button type="submit" class="btn btn-primary">Display Books of LibraryCardId 1</button>
+</form>
+<form asp-controller="Library" asp-action="DisplayBooksForLibraryCard" method="get">
+    <input type="hidden" name="libraryCardId" value="2" />
+    <button type="submit" class="btn btn-primary">Display Books of LibraryCardId 2</button>
+</form>
+</div>
+
+<h2>All Books in the Library</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Author</th>
+            <th>Published Year</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var book in Model)
+        {
+            <tr>
+                <td>@book.Title</td>
+                <td>@book.Author</td>
+                <td>@book.PublishedYear</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+ *@
+
+
+
+ @model List<dotnetapp.Models.Book>
+
+<p>
+    <a asp-action="AddBook" class="btn btn-primary">Add Book</a>
+</p>
+
+<form asp-controller="Library" asp-action="SearchBooksByTitle" method="post">
+    <div class="form-group">
+        <label for="searchQuery">Search by Title:</label>
+        <div class="button-container">
+            <input type="text" id="searchQuery" name="query" class="form-control textfield" />
+            <button type="submit" class="btn btn-primary">Search</button>
+        </div>
+    </div>
+</form>
+
+<div class="button-containers">
+    <form asp-controller="Library" asp-action="DisplayBooksForLibraryCard" method="get">
+        <input type="hidden" name="libraryCardId" value="1" />
+        <button type="submit" class="btn btn-primary">Display Books of LibraryCardId 1</button>
+    </form>
+    <form asp-controller="Library" asp-action="DisplayBooksForLibraryCard" method="get">
+        <input type="hidden" name="libraryCardId" value="2" />
+        <button type="submit" class="btn btn-primary">Display Books of LibraryCardId 2</button>
+    </form>
+</div>
+
+<h2>All Books in the Library</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Author</th>
+            <th>Published Year</th>
+            <th>Actions</th> <!-- Added a header for actions -->
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var book in Model)
+        {
+            <tr>
+                <td>@book.Title</td>
+                <td>@book.Author</td>
+                <td>@book.PublishedYear</td>
+                <td>
+                    <form asp-controller="Library" asp-action="DeleteBook" method="post" style="display:inline;">
+                        <input type="hidden" name="id" value="@book.Id" />
+                        <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+
+
+// DisplayBookForLibraryCard.cs
+
+
+@model List<dotnetapp.Models.Book>
+
+<h2>Books Associated with Library Card</h2>
+
+
+<ul>
+    @foreach (var book in Model)
+    {
+        <div>
+        <li>Title: @book.Title</li>
+        <li>Author: @book.Author</li>
+        <li>Published Year: @book.PublishedYear</li>
+        </div>
+    }
+</ul>
+
+    <a asp-action="DisplayAllBooks" class="btn btn-primary">Back</a>
+
+
+
+// Program.cs
+
+
+using dotnetapp.Models;
+using Microsoft.EntityFrameworkCore;
+
+var builder = WebApplication.CreateBuilder(args);
+
+// Add services to the container.
+builder.Services.AddControllersWithViews();
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseSqlServer("user id =sa;password=examlyMssql@123;server=localhost;database=appdb;trusted_connection=false;Persist Security Info=false; Encrypt=false")
+);
+var app = builder.Build();
+
+// Configure the HTTP request pipeline.
+if (!app.Environment.IsDevelopment())
+{
+    app.UseExceptionHandler("/Home/Error");
+    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+    app.UseHsts();
+}
+
+app.UseHttpsRedirection();
+app.UseStaticFiles();
+
+app.UseRouting();
+
+app.UseAuthorization();
+
+app.MapControllerRoute(
+    name: "default",
+    pattern: "{controller=Home}/{action=Index}/{id?}");
+
+app.Run();
+
