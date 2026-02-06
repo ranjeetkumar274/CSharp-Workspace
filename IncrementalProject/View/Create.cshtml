@@ -1,0 +1,20 @@
+@model dotnetapp.Models.Book
+<h1>Create Book</h1>
+<form asp-action="Create" method="Post">
+ 
+  <label>Title</label>
+  <input asp-for="Title" name="Title" for="Title" class="form-control">
+ 
+   <label>Author</label>
+  <input class="form-control" asp-for="Author" name="Author" for="Author">
+ 
+   <label>Category</label>
+  <input class="form-control" asp-for="Category" name="Category" for="Category">
+ 
+   <label>Price</label>
+  <input class="form-control" asp-for="Price" name="Price" for="Price">
+ 
+  <input  type="Submit" value="Create">
+ 
+</form>
+<a asp-action="Index">Back to List</a>
