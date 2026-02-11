@@ -1,0 +1,55 @@
+<h1>Employee List</h1>
+<table>
+  <thead>
+    <tr>
+    <th>ID</th>
+    <th>Name</th>
+    <th>Position</th>
+    <th>Salary</th>
+    </tr>
+    </thead>
+ 
+   <tbody>
+    <tr *ngFor="let e of employeeData">
+      <td>{{e.id}}</td>
+      <td>{{e.name}}</td>
+      <td>{{e.position}}</td>
+      <td>{{e.salary}}</td>
+    </tr>
+   </tbody>
+  </table>
+
+
+  import { Component } from '@angular/core';
+import { Employee } from './employee.model';
+ 
+@Component({
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.css']
+})
+export class AppComponent {
+  title = 'angularapp';
+ 
+  employeeData: Employee[] = [
+    {
+      id:10,name:'sanjay',position:'hr',salary:500
+    },
+  {
+    id:11,name:'sannjay',position:'hr',salary:50
+  }
+];
+}
+app component
+
+
+
+
+export interface Employee
+{
+    id: number;
+    name: string;
+    position: string;
+    salary : number;
+ 
+} app model
