@@ -1,0 +1,11 @@
+
+
+<h2>Enter USer Data</h2>
+<br/>
+<form [formGroup]="userForm" (ngSubmit)="onSubmit()">
+    <input type="number" formControlName="id" placeholder="ID">
+    <input type="text" formControlName="name" placeholder="Name">
+    <input type="email" formControlName="email" placeholder="Email">
+    
+    <button type="submit">Submit</button>
+</form>
