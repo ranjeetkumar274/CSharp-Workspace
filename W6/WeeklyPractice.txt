@@ -1,0 +1,32 @@
+Based on the document provided, here is the structured problem statement for the Fitness Tracker Application. This outlines the requirements for building an Angular component that manages workout data with parent-child communication principles in mind.
+​Problem Statement: Fitness Tracker Component
+​1. Data Modeling
+​Define a TypeScript interface named Workout to represent the structure of a single workout entry. Each entry must include:  
+​exercise: A string representing the name of the activity.  
+​duration: A number representing the time spent.  
+​completed: A boolean indicating the status of the workout.  
+​2. Component Logic (fitness-tracker.component.ts)
+​Initialize the component state with the following properties:
+​workouts: An array of Workout objects.  
+​newExercise: A string initialized as empty.  
+​newDuration: A number initialized to 30.  
+​Implement these functional requirements:
+​addWorkout(): This method should check if newExercise is not empty and newDuration is greater than 0. If valid, push a new workout object to the array (with completed set to false) and reset the input properties to their initial values.  
+​toggleCompleted(index: number): A method to toggle the completion status of a specific workout in the list.  
+​removeWorkout(index: number): A method to remove a workout from the list using the splice() function.  
+​3. Template Design (fitness-tracker.component.html)
+​The user interface should be organized into an input section and a display section:
+​A. Input Group
+​Create a label "Exercise Name:" with a text input bound to newExercise using [(ngModel)].  
+​Create a label "Duration (minutes):" with a number input (minimum value of 1) bound to newDuration using [(ngModel)].  
+​Provide an "Add Workout" button with the class add-button to trigger the addition logic.  
+​B. Display List
+​Use *ngFor to render each workout in a <ul> list.  
+​For each item, include:
+​A checkbox to toggle completion via toggleCompleted(i).  
+​A span to show the exercise name and duration.  
+​Conditional Styling: Use ngClass to apply a .completed class (to strike through text) if the item is finished.  
+​A "Remove" button to delete the item via removeWorkout(i).  
+​C. Empty State
+​Display the message "No workouts scheduled." when the workouts array is empty.  
+​Would you like me to help you write the TypeScript implementation or the HTML template for this specific problem?
