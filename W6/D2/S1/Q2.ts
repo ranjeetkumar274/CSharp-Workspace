@@ -5,45 +5,37 @@ import { Component, OnInit } from '@angular/core';
   templateUrl: './countdown.component.html',
   styleUrls: ['./countdown.component.css']
 })
-export class CountdownComponent implements OnInit {
-  countdown: number = 0;
+export class CountdownComponent implements OnInit{
+  countdown: number=0;
   intervalId: any;
+  constructor(){
 
-  constructor() { }
-
-  ngOnInit(): void {
   }
-
-  startCountdown(seconds: number) {
-    this.countdown = seconds;
-    
-    // Clear any existing interval to prevent multiple timers running at once
-    if (this.intervalId) {
-      clearInterval(this.intervalId);
-    }
-
-    this.intervalId = setInterval(() => {
-      if (this.countdown > 0) {
+  startCountdown(seconds:number){
+    this.countdown=seconds;
+    this.intervalId=setInterval(()=>{
+      if(this.countdown>0){
         this.countdown--;
-      } else {
+      }
+      else{
         clearInterval(this.intervalId);
       }
-    }, 1000);
+    },1000)
   }
+  ngOnInit(): void {
+    
+  }
+
 }
 
 
 
-<div class="model-container">
-  <h2>Count Fixer</h2>
-  
-  <input type="number" #seconds placeholder="Enter seconds">
-  
-  <button (click)="startCountdown(seconds.value)">
-    Start Countdown
-  </button>
 
-  <span>{{ countdown }}</span>
+<div class="model-container">
+    <h2>Count Fixer</h2>
+    <input type="number" #seconds>
+    <button (click)="startCountdown(seconds.valueAsNumber)">Start Countdown</button>
+    <span>{{countdown}}</span>
 </div>
 
 
