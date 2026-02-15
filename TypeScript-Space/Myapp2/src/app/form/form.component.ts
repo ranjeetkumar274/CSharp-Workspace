@@ -13,7 +13,7 @@ export class FormComponent {
   constructor(private dataService : DataService){}
 
 
-  userForm = new FormGroup({
+  userForm = new FormGroup({  
     id : new FormControl(''),
     name : new FormControl(''),
     email : new FormControl('')

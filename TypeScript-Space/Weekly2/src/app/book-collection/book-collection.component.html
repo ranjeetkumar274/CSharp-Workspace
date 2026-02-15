@@ -1,0 +1,23 @@
+<label>Book Title: </label>
+<input type="text" [(ngModel)]="rawBookTitle"/>
+
+<label>Rating: </label>
+<input type="number" [(ngModel)]="rawRating"/>
+
+<button (click)="addBook()">Add Book</button>
+
+
+<ul *ngIf="books.length > 0; else noBooks">
+    <li *ngFor="let book of books; let i = index">
+        <input type="checkbox"
+        [checked]="book.read"
+        (change)="toggleRead(i)"/>
+
+        <span [style.text-decoration]="book.read ? 'line-through' : 'none'">{{book.title}}-{{book.rating}}</span>
+        <button (click)="removeBook(i)">Remove</button>
+    </li>
+</ul>
+
+<ng-template #noBooks>
+    <p>No books added yet.</p>
+</ng-template>
