@@ -1,0 +1,22 @@
+<label>Enter Description : </label>
+<input type="text" [(ngModel)]="currDescription">
+
+<label>Enter DueDate : </label>
+<input type="text" [(ngModel)]="currDueDate">
+
+<label>Enter Priority : </label>
+<input type="number" [(ngModel)]="currPriority">
+
+<button (click)="addTask()">Add Task</button>
+
+<ul *ngIf="tasks.length > 0">
+    <li *ngFor="let task of tasks; let i = index">
+        <input type="checkbox"
+        [checked]="task.completed"
+        (change)="toggleCompleted(i)">
+
+        <span>{{task.description}}--{{task.dueDate}}--{{task.priority}}</span>
+
+        <button (click)="removeTask(i)">Remove</button>
+    </li>
+</ul>

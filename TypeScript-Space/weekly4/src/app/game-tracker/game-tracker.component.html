@@ -1,0 +1,22 @@
+<label>Enter Game Title : </label>
+<input type="text" [(ngModel)]="currGameTitle"/>
+
+<label>Enter Platform : </label>
+<input type="text" [(ngModel)]="currPlatform"/>
+
+<label>HoursPlayed : </label>
+<input type="number" [(ngModel)]="currHoursPlayed"/>
+
+<button (click)="addGame()">Add Game</button>
+
+<ul *ngIf="games.length > 0">
+    <li *ngFor="let game of games; let i = index">
+        <input type="checkbox"
+        [checked]="game.completed"
+        (change)="toggleCompleted(i)"/>
+
+        <span>{{game.title}}--{{game.platform}}--{{game.hoursPlayed}}</span>
+
+        <button (click)="removeGame(i)">Remove</button>
+    </li>
+</ul>

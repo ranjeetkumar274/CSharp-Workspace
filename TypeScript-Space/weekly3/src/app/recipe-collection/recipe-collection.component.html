@@ -1,0 +1,17 @@
+<label>Recipe Name: </label>
+<input type="text" [(ngModel)]="rawName"/>
+
+<label>Difficulty</label>
+<input type="number" [(ngModel)]="rawDifficulty"/>
+
+<button (click)="addRecipe()">Add</button>
+
+<ul *ngIf="recipies.length > 0">
+    <li *ngFor="let recipe of recipies; let i = index">
+        <input type="checkbox"
+        [checked]="recipe.tried"
+        (change)="toggleTried(i)"/>
+        <span>{{recipe.name}}--{{recipe.difficulty}}</span>
+        <button (click)="removeRecipe(i)">Delete</button>
+    </li>
+</ul>

@@ -1,0 +1,22 @@
+<label>Enter Place : </label>
+<input type="text" [(ngModel)]="currPlace"> 
+
+<label>Enter Country : </label>
+<input type="text" [(ngModel)]="currCountry"> 
+
+<label>Enter Priority : </label>
+<input type="number" [(ngModel)]="currPriority"> 
+
+<button (click)="addTravel()">Add Travel</button>
+
+<ul *ngIf="travels.length > 0">
+    <li *ngFor="let travel of travels; let i = index">
+        <input type="checkbox"
+        [checked]="travel.visited"
+        (change)="toggleVisited(i)">
+
+        <span>{{travel.place}}--{{travel.country}}--{{travel.priority}}</span>
+
+        <button (click)="removeTravel(i)">Remove</button>
+    </li>
+</ul>
