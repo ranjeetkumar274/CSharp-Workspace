@@ -1,0 +1,16 @@
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <OutputPath>bin\\Build\\</OutputPath>
+  </PropertyGroup>
+
+  <Target Name="Build">
+    <MSBuild Projects="dotnetapp.csproj" Targets="Build" Properties="Configuration=$(Configuration);OutputPath=$(OutputPath)" />
+  </Target>
+
+  <Target Name="Clean">
+    <MSBuild Projects="dotnetapp.csproj" Targets="Clean" Properties="Configuration=$(Configuration)" />
+  </Target>
+
+  <Target Name="Rebuild" DependsOnTargets="Clean;Build" />
+</Project>
