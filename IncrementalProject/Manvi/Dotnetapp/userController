@@ -1,0 +1,57 @@
+using dotnetapp.Models;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+
+namespace dotnetapp.Controllers;
+
+[ApiController]
+[Route("api/users")]
+public class UserController : ControllerBase
+{
+    private readonly ApplicationDbContext _context;
+
+    public UserController(ApplicationDbContext context)
+    {
+        _context = context;
+    }
+
+    [HttpPost("register")]
+    public async Task<ActionResult<User>> Register(User user)
+    {
+        if (user == null || string.IsNullOrWhiteSpace(user.Username))
+        {
+            return BadRequest(new { Message = "Invalid user" });
+        }
+
+    var validRoles = new[] { "Admin", "Organizer", "Attendee" };
+        if (!validRoles.Contains(user.Role))
+        {
+            return BadRequest(new { Message = "Invalid role" });
+        }
+
+    var exists = await _context.Users.AnyAsync(u => u.Username == user.Username);
+        if (exists)
+        {
+            return Conflict(new { Message = "User already exists" });
+        }
+
+    _context.Users.Add(user);
+        await _context.SaveChangesAsync();
+
+    return StatusCode(StatusCodes.Status201Created, user);
+    }
+[HttpPost("login")]
+public async Task<IActionResult> Login([FromBody] LoginModel login)
+{
+    var user = await _context.Users
+        .FirstOrDefaultAsync(u => u.Username == login.Username && u.Password == login.Password);
+
+    if (user == null)
+    {
+        return BadRequest(new { Message = "Invalid credentials" });
+    }
+
+    return Ok(user);
+}
+
+}
