@@ -1,0 +1,25 @@
+using Microsoft.EntityFrameworkCore;
+
+namespace dotnetapp.Models
+{
+    public class ApplicationDbContext : DbContext
+    {
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+            : base(options)
+        {
+        }
+
+        public DbSet<Event> Events { get; set; }
+        public DbSet<Attendee> Attendees { get; set; }
+        public DbSet<User> Users {get; set;}
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Event>().ToTable("Events");
+            modelBuilder.Entity<Attendee>().ToTable("Attendees");
+            modelBuilder.Entity<User>().ToTable("Users");
+
+    base.OnModelCreating(modelBuilder);
+        }
+    }
+}
