@@ -1,0 +1,147 @@
+HTML
+
+<div class="admin-container">
+    <h2>Admin Panel</h2>
+  
+    <app-event
+      [events]="events"
+      [editedEvent]="editedEvent"
+      (editEventEvent)="editEvent($event)"
+      (saveEditedEventEvent)="saveEditedEvent()"
+      (cancelEditEventEvent)="cancelEditEvent()"
+      (deleteEventEvent)="deleteEvent($event)">
+    </app-event>
+  
+    <app-attendee
+      [attendees]="attendees"
+      [editedAttendee]="editedAttendee"
+      (editAttendeeEvent)="editAttendee($event)"
+      (saveEditedAttendeeEvent)="saveEditedAttendee()"
+      (cancelEditAttendeeEvent)="cancelEditAttendee()"
+      (deleteAttendeeEvent)="deleteAttendee($event)">
+    </app-attendee>
+  
+  </div>
+
+
+\\\\\\\\\ admin.ts
+
+import { Component, OnInit } from '@angular/core';
+import { EventService } from '../services/event.service';
+import { AttendeeService } from '../services/attendee.service';
+import { Event } from '../../models/event.model';
+import { Attendee } from '../../models/attendee.model';
+
+@Component({
+  selector: 'app-admin',
+  templateUrl: './admin.component.html',
+  styleUrls: ['./admin.component.css']
+})
+export class AdminComponent implements OnInit {
+  events: Event[] = [];
+  attendees: Attendee[] = [];
+  editedEvent: Event | null = null;
+  editedAttendee: Attendee | null = null;
+
+  constructor(
+    private eventService: EventService,
+    private attendeeService: AttendeeService
+  ) {}
+
+  ngOnInit(): void {
+    this.getEvents();
+    this.getAttendees();
+  }
+
+  // ===== Event Methods =====
+
+  getEvents(): void {
+    this.eventService.getEvents().subscribe({
+      next: (events) => {
+        this.events = events;
+      },
+      error: (err) => {
+        console.error('Failed to fetch events', err);
+      }
+    });
+  }
+
+  editEvent(event: Event): void {
+    this.editedEvent = { ...event };
+  }
+
+  saveEditedEvent(): void {
+    if (this.editedEvent && this.editedEvent.EventId) {
+      this.eventService.updateEvent(this.editedEvent.EventId, this.editedEvent).subscribe({
+        next: () => {
+          this.getEvents();
+          this.editedEvent = null;
+        },
+        error: (err) => {
+          console.error('Failed to update event', err);
+        }
+      });
+    }
+  }
+
+  cancelEditEvent(): void {
+    this.editedEvent = null;
+  }
+
+  deleteEvent(eventId: number): void {
+    this.eventService.deleteEvent(eventId).subscribe({
+      next: () => {
+        this.getEvents();
+      },
+      error: (err) => {
+        console.error('Failed to delete event', err);
+      }
+    });
+  }
+
+  // ===== Attendee Methods =====
+
+  getAttendees(): void {
+    this.attendeeService.getAttendees().subscribe({
+      next: (attendees) => {
+        this.attendees = attendees;
+      },
+      error: (err) => {
+        console.error('Failed to fetch attendees', err);
+      }
+    });
+  }
+
+  editAttendee(attendee: Attendee): void {
+    this.editedAttendee = { ...attendee };
+  }
+
+  saveEditedAttendee(): void {
+    if (this.editedAttendee && this.editedAttendee.AttendeeId) {
+      this.attendeeService.updateAttendee(this.editedAttendee.AttendeeId, this.editedAttendee).subscribe({
+        next: () => {
+          this.getAttendees();
+          this.editedAttendee = null;
+        },
+        error: (err) => {
+          console.error('Failed to update attendee', err);
+        }
+      });
+    }
+  }
+
+  cancelEditAttendee(): void {
+    this.editedAttendee = null;
+  }
+
+  deleteAttendee(attendeeId: number): void {
+    this.attendeeService.deleteAttendee(attendeeId).subscribe({
+      next: () => {
+        this.getAttendees();
+      },
+      error: (err) => {
+        console.error('Failed to delete attendee', err);
+      }
+    });
+  }
+}
