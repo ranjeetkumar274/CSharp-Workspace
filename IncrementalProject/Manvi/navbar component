@@ -1,0 +1,45 @@
+html
+
+<nav>
+    <a routerLink="/">Home</a>
+  
+  <a routerLink="/organizer" *ngIf="authService.isOrganizer()">Organizer</a>
+  
+  <a routerLink="/admin" *ngIf="authService.isAdmin()">Admin</a>
+  
+  <a routerLink="/admin/createEvent" *ngIf="authService.isAdmin()">Create Event</a>
+  
+  <a routerLink="/admin/createAttendee" *ngIf="authService.isAdmin()">Create Attendee</a>
+  
+  <a routerLink="/signup" *ngIf="!authService.isLoggedIn()">Register</a>
+  
+  <a routerLink="/login" *ngIf="!authService.isLoggedIn()">Login</a>
+  
+    <a (click)="logout()" *ngIf="authService.isLoggedIn()">Logout</a>
+  
+  </nav>
+
+
+
+////////////ts file 
+
+
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { AuthService } from '../services/auth.service';
+
+@Component({
+  selector: 'app-navbar',
+  templateUrl: './navbar.component.html',
+  styleUrls: ['./navbar.component.css']
+})
+export class NavbarComponent implements OnInit {
+  constructor(public authService: AuthService, private router: Router) {}
+
+  ngOnInit(): void {}
+
+  logout(): void {
+    this.authService.logout();
+    this.router.navigate(['/login']);
+  }
+}
