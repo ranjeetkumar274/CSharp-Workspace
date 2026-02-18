@@ -1,0 +1,101 @@
+```markdown
+. 📂 angularapp
+├── 📄 .editorconfig
+├── 📄 angular.json
+├── 📄 karma.conf.js
+├── 📄 package-lock.json
+├── 📄 package.json
+└── 📂 src/
+│  └── 📂 app/
+│    └── 📂 admin/
+│      ├── 📄 admin.component.css
+│      ├── 📄 admin.component.html
+│      ├── 📄 admin.component.spec.ts
+│      ├── 📄 admin.component.ts
+│    ├── 📄 app-routing.module.ts
+│    ├── 📄 app.component.css
+│    ├── 📄 app.component.html
+│    ├── 📄 app.component.spec.ts
+│    ├── 📄 app.component.ts
+│    ├── 📄 app.module.ts
+│    └── 📂 attendee/
+│      ├── 📄 attendee.component.css
+│      ├── 📄 attendee.component.html
+│      ├── 📄 attendee.component.spec.ts
+│      ├── 📄 attendee.component.ts
+│      └── 📂 create-attendee/
+│        ├── 📄 create-attendee.component.css
+│        ├── 📄 create-attendee.component.html
+│        ├── 📄 create-attendee.component.spec.ts
+│        ├── 📄 create-attendee.component.ts
+│    └── 📂 authguard/
+│      ├── 📄 auth.guard.spec.ts
+│      ├── 📄 auth.guard.ts
+│    └── 📂 error/
+│      ├── 📄 error.component.css
+│      ├── 📄 error.component.html
+│      ├── 📄 error.component.spec.ts
+│      ├── 📄 error.component.ts
+│    └── 📂 event/
+│      └── 📂 create-event/
+│        ├── 📄 create-event.component.css
+│        ├── 📄 create-event.component.html
+│        ├── 📄 create-event.component.spec.ts
+│        ├── 📄 create-event.component.ts
+│      ├── 📄 event.component.css
+│      ├── 📄 event.component.html
+│      ├── 📄 event.component.spec.ts
+│      ├── 📄 event.component.ts
+│    └── 📂 home/
+│      ├── 📄 home.component.css
+│      ├── 📄 home.component.html
+│      ├── 📄 home.component.spec.ts
+│      ├── 📄 home.component.ts
+│    └── 📂 login/
+│      ├── 📄 login.component.css
+│      ├── 📄 login.component.html
+│      ├── 📄 login.component.spec.ts
+│      ├── 📄 login.component.ts
+│    └── 📂 navbar/
+│      ├── 📄 navbar.component.css
+│      ├── 📄 navbar.component.html
+│      ├── 📄 navbar.component.spec.ts
+│      ├── 📄 navbar.component.ts
+│    └── 📂 organizer/
+│      ├── 📄 organizer.component.css
+│      ├── 📄 organizer.component.html
+│      ├── 📄 organizer.component.spec.ts
+│      ├── 📄 organizer.component.ts
+│    └── 📂 registration/
+│      ├── 📄 registration.component.css
+│      ├── 📄 registration.component.html
+│      ├── 📄 registration.component.spec.ts
+│      ├── 📄 registration.component.ts
+│    └── 📂 services/
+│      ├── 📄 attendee.service.spec.ts
+│      ├── 📄 attendee.service.ts
+│      ├── 📄 auth.service.spec.ts
+│      ├── 📄 auth.service.ts
+│      ├── 📄 event.service.spec.ts
+│      ├── 📄 event.service.ts
+│  └── 📂 assets/
+│    ├── 📄 .gitkeep
+│  ├── 📄 favicon.ico
+│  ├── 📄 index.html
+│  ├── 📄 main.ts
+│  └── 📂 models/
+│    ├── 📄 attendee.model.spec.ts
+│    ├── 📄 attendee.model.ts
+│    ├── 📄 event.model.spec.ts
+│    ├── 📄 event.model.ts
+│    ├── 📄 login-model.model.spec.ts
+│    ├── 📄 login-model.model.ts
+│    ├── 📄 user.model.spec.ts
+│    ├── 📄 user.model.ts
+│  ├── 📄 polyfills.ts
+│  ├── 📄 styles.css
+│  ├── 📄 test.ts
+├── 📄 tsconfig.app.json
+├── 📄 tsconfig.json
+└── 📄 tsconfig.spec.json
+```
