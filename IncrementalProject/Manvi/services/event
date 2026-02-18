@@ -1,0 +1,29 @@
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { Event } from '../../models/event.model';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class EventService {
+  private baseUrl: string = 'https://8080-premiumproject.examly.io/api';
+
+  constructor(private http: HttpClient) {}
+
+  getEvents(): Observable<Event[]> {
+    return this.http.get<Event[]>(`${this.baseUrl}/GetEvents`);
+  }
+
+  createEvent(event: Event): Observable<Event> {
+    return this.http.post<Event>(`${this.baseUrl}/PostEvent`, event);
+  }
+
+  updateEvent(eventId: number, event: Event): Observable<Event> {
+    return this.http.put<Event>(`${this.baseUrl}/PutEvent/${eventId}`, event);
+  }
+
+  deleteEvent(eventId: number): Observable <void> {
+    return this.http.delete <void>(`${this.baseUrl}/DeleteEvent/${eventId}`);
+  }
+}
