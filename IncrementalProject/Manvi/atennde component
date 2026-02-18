@@ -1,0 +1,95 @@
+////html 
+
+
+<div class="attendee-container">
+    <h3>Attendees</h3>
+  
+  <!-- Attendee Table -->
+  
+  <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Age</th>
+          <th>Email</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let attendee of attendees">
+          <td>{{ attendee.Name }}</td>
+          <td>{{ attendee.Age }}</td>
+          <td>{{ attendee.Email }}</td>
+          <td>
+            <button (click)="onEditAttendee(attendee)">Edit</button>
+            <button (click)="onDeleteAttendee(attendee.AttendeeId!)">Delete</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  
+  <!-- Edit Attendee Form -->
+  
+  <div *ngIf="editedAttendee">
+      <h4>Edit Attendee</h4>
+      <form>
+        <div>
+          <label for="editAttendeeName">Name</label>
+          <input type="text" id="editAttendeeName" [(ngModel)]="editedAttendee.Name" name="editAttendeeName" />
+        </div>
+        <div>
+          <label for="editAttendeeAge">Age</label>
+          <input type="text" id="editAttendeeAge" [(ngModel)]="editedAttendee.Age" name="editAttendeeAge" />
+        </div>
+        <div>
+          <label for="editAttendeeEmail">Email</label>
+          <input type="email" id="editAttendeeEmail" [(ngModel)]="editedAttendee.Email" name="editAttendeeEmail" />
+        </div>
+        <button type="button" (click)="onSaveEditedAttendee()">Save</button>
+        <button type="button" (click)="onCancelEditAttendee()">Cancel</button>
+      </form>
+    </div>
+  </div>
+
+
+
+///////////
+
+
+  import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
+import { Attendee } from '../../models/attendee.model';
+
+@Component({
+  selector: 'app-attendee',
+  templateUrl: './attendee.component.html',
+  styleUrls: ['./attendee.component.css']
+})
+export class AttendeeComponent implements OnInit {
+  @Input() attendees: Attendee[] = [];
+  @Input() editedAttendee: Attendee | null = null;
+
+  @Output() editAttendeeEvent = new EventEmitter<Attendee>();
+  @Output() saveEditedAttendeeEvent = new EventEmitter<void>();
+  @Output() cancelEditAttendeeEvent = new EventEmitter<void>();
+  @Output() deleteAttendeeEvent = new EventEmitter<number>();
+
+  constructor() {}
+
+  ngOnInit(): void {}
+
+  onEditAttendee(attendee: Attendee): void {
+    this.editAttendeeEvent.emit(attendee);
+  }
+
+  onSaveEditedAttendee(): void {
+    this.saveEditedAttendeeEvent.emit();
+  }
+
+  onCancelEditAttendee(): void {
+    this.cancelEditAttendeeEvent.emit();
+  }
+
+  onDeleteAttendee(attendeeId: number): void {
+    this.deleteAttendeeEvent.emit(attendeeId);
+  }
+}
