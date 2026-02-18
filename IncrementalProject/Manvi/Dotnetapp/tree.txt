@@ -1,0 +1,41 @@
+```markdown
+. 📂 dotnetapp
+└── 📂 .config/
+│  ├── 📄 dotnet-tools.json
+└── 📂 Controllers/
+│  ├── 📄 AttendeeController.cs
+│  ├── 📄 EventController.cs
+│  ├── 📄 UserController.cs
+│  ├── 📄 WeatherForecastController.cs
+└── 📂 Migrations/
+│  ├── 📄 20260215132113_initialsetup.Designer.cs
+│  ├── 📄 20260215132113_initialsetup.cs
+│  ├── 📄 ApplicationDbContextModelSnapshot.cs
+└── 📂 Models/
+│  ├── 📄 ApplicationDbContext.cs
+│  ├── 📄 Attendee.cs
+│  ├── 📄 Event.cs
+│  ├── 📄 LoginModel.cs
+│  ├── 📄 User.cs
+├── 📄 Program.cs
+└── 📂 Properties/
+│  ├── 📄 launchSettings.json
+├── 📄 WeatherForecast.cs
+├── 📄 appsettings.Development.json
+├── 📄 appsettings.json
+└── 📂 bin/
+│  └── 📂 Debug/
+│    └── 📂 net6.0/
+├── 📄 dotnetapp.csproj
+├── 📄 dotnetapp.sln
+└── 📂 obj/
+│  └── 📂 Debug/
+│    └── 📂 net6.0/
+│      ├── 📄 dotnetapp.GeneratedMSBuildEditorConfig.editorconfig
+│      ├── 📄 dotnetapp.GlobalUsings.g.cs
+│      ├── 📄 dotnetapp.csproj.AssemblyReference.cache
+│      ├── 📄 project.razor.json
+│      └── 📂 ref/
+│      └── 📂 refint/
+│      └── 📂 staticwebassets/
+```
