@@ -1,0 +1,104 @@
+///
+
+<div class="event-container">
+    <h3>Events</h3>
+  
+  <!-- Event Table -->
+  
+  <table>
+      <thead>
+        <tr>
+          <th>Event Name</th>
+          <th>Location</th>
+          <th>Date</th>
+          <th>Budget</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let event of events">
+          <td>{{ event.Name }}</td>
+          <td>{{ event.Location }}</td>
+          <td>{{ event.Date }}</td>
+          <td>{{ event.Budget }}</td>
+          <td>
+            <button (click)="onEditEvent(event)">Edit</button>
+            <button (click)="onDeleteEvent(event.EventId!)">Delete</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  
+  <!-- Edit Event Form -->
+  
+  <div *ngIf="editedEvent">
+      <h4>Edit Event</h4>
+      <form>
+        <div>
+          <label for="editEventName">Event Name</label>
+          <input type="text" id="editEventName" [(ngModel)]="editedEvent.Name" name="editEventName" />
+        </div>
+        <div>
+          <label for="editEventLocation">Location</label>
+          <input type="text" id="editEventLocation" [(ngModel)]="editedEvent.Location" name="editEventLocation" />
+        </div>
+        <div>
+          <label for="editEventDate">Date</label>
+          <input type="date" id="editEventDate" [ngModel]="editedEvent.Date | date:'yyyy-MM-dd'" (ngModelChange)="onDateChange($event)" name="editEventDate" />
+        </div>
+        <div>
+          <label for="editEventBudget">Budget</label>
+          <input type="number" id="editEventBudget" [(ngModel)]="editedEvent.Budget" name="editEventBudget" />
+        </div>
+        <button type="button" (click)="onSaveEditedEvent()">Save</button>
+        <button type="button" (click)="onCancelEditEvent()">Cancel</button>
+      </form>
+    </div>
+  </div>
+
+
+  ///////////
+
+  import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
+import { Event } from '../../models/event.model';
+
+@Component({
+  selector: 'app-event',
+  templateUrl: './event.component.html',
+  styleUrls: ['./event.component.css']
+})
+export class EventComponent implements OnInit {
+  @Input() events: Event[] = [];
+  @Input() editedEvent: Event | null = null;
+
+  @Output() editEventEvent = new EventEmitter<Event>();
+  @Output() saveEditedEventEvent = new EventEmitter<void>();
+  @Output() cancelEditEventEvent = new EventEmitter<void>();
+  @Output() deleteEventEvent = new EventEmitter<number>();
+
+  constructor() {}
+
+  ngOnInit(): void {}
+
+  onEditEvent(event: Event): void {
+    this.editEventEvent.emit(event);
+  }
+
+  onSaveEditedEvent(): void {
+    this.saveEditedEventEvent.emit();
+  }
+
+  onCancelEditEvent(): void {
+    this.cancelEditEventEvent.emit();
+  }
+
+  onDeleteEvent(eventId: number): void {
+    this.deleteEventEvent.emit(eventId);
+  }
+
+  onDateChange(date: string): void {
+    if (this.editedEvent) {
+      this.editedEvent.Date = new Date(date);
+    }
+  }
+}
