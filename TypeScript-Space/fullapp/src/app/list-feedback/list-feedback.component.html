@@ -1,0 +1,23 @@
+<h1>Feedback Report</h1>
+
+<table>
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Course Name</th>
+            <th>Instructor Name</th>
+            <th>Start Date</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let f of feedbacks">
+            <td>{{f.id}}</td>
+            <td>{{f.courseName}}</td>
+            <td>{{f.instructorName}}</td>
+            <td>{{f.startDate}}</td>
+            <td><button (click)="deleteFeedback(f.id)">Delete</button></td>
+            <td><button (click)="updateFeedback(f.id)">Update</button></td>
+
+        </tr>
+    </tbody>
+</table>

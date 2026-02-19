@@ -1,0 +1,8 @@
+{
+  "/api": {
+    "target": "https://urban-space-computing-machine-7v9gpxwrv64x3x77r-3000.app.github.dev",
+    "secure": false,
+    "changeOrigin": true,
+    "logLevel": "debug"
+  }
+}

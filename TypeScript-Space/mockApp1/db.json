@@ -1,0 +1,11 @@
+{
+  "budgets": [
+    {
+      "id": 1,
+      "category": "Salary",
+      "amount": 50000,
+      "type": "income",
+      "date": "2020-02-01"
+    }
+  ]
+}

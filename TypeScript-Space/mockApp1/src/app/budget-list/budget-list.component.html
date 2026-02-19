@@ -1,0 +1,21 @@
+<h1>Budget List</h1>
+
+<table>
+    <thead>
+        <th>Id</th>
+        <th>Category</th>
+        <th>Type</th>
+        <th>Amount</th>
+        <th>Date</th>
+    </thead>
+    <tbody>
+        <tr *ngFor="let b of budgets">
+            <td>{{b.id}}</td>
+            <td>{{b.category}}</td>
+            <td>{{b.type}}</td>
+            <td>{{b.amount}}</td>
+            <td>{{b.date}}</td>
+            <!-- <td><button (click)="deleteBudget(b.id)">Delete</button></td> -->
+        </tr>
+    </tbody>
+</table>
