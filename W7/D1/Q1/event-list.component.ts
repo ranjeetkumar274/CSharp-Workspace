@@ -29,6 +29,23 @@ export class EventListComponent implements OnInit {
     });
   }
 
+    deleteEvent(id: number){
+    this.rt.navigate([`/confirmDelete`,id]);
+  }
+
+
+  searchEvents(){
+    if(this.searchTerm){
+      this.filteredEvents = this.events.filter(f => f.eventName.startsWith(this.searchTerm));
+    }
+    else{
+      this.filteredEvents = this.events;
+    }
+  }
+
+}
+
+
 
 
 
@@ -65,18 +82,3 @@ export class EventListComponent implements OnInit {
 </tbody>
 </table>
 
-  deleteEvent(id: number){
-    this.rt.navigate([`/confirmDelete`,id]);
-  }
-
-
-  searchEvents(){
-    if(this.searchTerm){
-      this.filteredEvents = this.events.filter(f => f.eventName.startsWith(this.searchTerm));
-    }
-    else{
-      this.filteredEvents = this.events;
-    }
-  }
-
-}
