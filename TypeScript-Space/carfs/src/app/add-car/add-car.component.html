@@ -1,0 +1,31 @@
+<h2>{{ isEditMode ? 'Edit Car' : 'Add Car'}}</h2>
+
+
+<form (ngSubmit)="addCar()" #carForm="ngForm">
+
+    <div>
+        <label>Enter Id: </label>
+        <input type="number" name="id" id="id" [(ngModel)]="obj.id" required/>
+        <div class="error-message" *ngIf="carForm.submitted && !obj.id" style="color: red;">Id is Invalid</div>
+    </div>
+
+    <div>
+        <label>Enter Model: </label>
+        <input type="text" name="model" id="model" [(ngModel)]="obj.model" required/>
+        <div class="error-message" *ngIf="carForm.submitted && !obj.model" style="color: red;">Model is Invalid</div>
+    </div>
+
+    <div>
+        <label>Enter Car Number: </label>
+        <input type="text" name="carNumber" id="carNumber" [(ngModel)]="obj.carNumber" required/>
+        <div class="error-message" *ngIf="carForm.submitted && !obj.carNumber" style="color: red;">Car Number is Invalid</div>
+    </div>
+
+    <div>
+        <label>Enter Service Date: </label>
+        <input type="text" name="serviceDate" id="serviceDate" [(ngModel)]="obj.serviceDate" required/>
+        <div class="error-message" *ngIf="carForm.submitted && !obj.serviceDate" style="color: red;">Date is Invalid</div>
+    </div>
+
+    <button type="submit">{{ isEditMode ? 'Update' : 'Add'}}</button>
+</form>

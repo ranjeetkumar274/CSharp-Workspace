@@ -1,0 +1,16 @@
+<h2>Delete Confirmation</h2>
+
+<label>ID</label>
+<h3>{{obj.id}}</h3>
+
+<label>Model</label>
+<h3>{{obj.model}}</h3>
+
+<label>Car Number</label>
+<h3>{{obj.carNumber}}</h3>
+
+<label>Service Date</label>
+<h3>{{obj.serviceDate}}</h3>
+
+<button (click)="finaldeleteCar(obj.id)">Delete</button>
+<button (click)="cancel()">Cancel</button>

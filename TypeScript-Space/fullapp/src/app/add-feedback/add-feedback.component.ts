@@ -41,9 +41,7 @@ export class AddFeedbackComponent implements OnInit{
   addFeedback(){
     if(this.isEditMode){
       this.ser.updateFeedback(this.objid, this.obj).subscribe(
-        () => {this.rt.navigate([`/showFeedbacks`]);
-
-        }
+        () => setTimeout( () => this.rt.navigate([`/showFeedbacks`]),3000)
       );
     }else{
       this.submitted = true;

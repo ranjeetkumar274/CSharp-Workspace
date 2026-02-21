@@ -1,23 +1,47 @@
-<h1>Feedback Report</h1>
+<h1 style="text-align:center; color:#333;">Feedback Report</h1>
 
-<table>
-    <thead>
-        <tr>
-            <th>ID</th>
-            <th>Course Name</th>
-            <th>Instructor Name</th>
-            <th>Start Date</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr *ngFor="let f of feedbacks">
-            <td>{{f.id}}</td>
-            <td>{{f.courseName}}</td>
-            <td>{{f.instructorName}}</td>
-            <td>{{f.startDate}}</td>
-            <td><button (click)="deleteFeedback(f.id)">Delete</button></td>
-            <td><button (click)="updateFeedback(f.id)">Update</button></td>
+<div style="margin-bottom: 16px; text-align:center;">
+  <input
+    type="text"
+    [(ngModel)]="searchTerm"
+    style="padding: 4px 8px; border: 1px solid #ccc; border-radius: 4px;"
+  />
+  <button
+    (click)="searchFeedback()"
+    style="margin-left: 4px; padding: 4px 10px; border-radius: 4px; border: none; background: #007bff; color: #fff; cursor: pointer;"
+  >
+    Search
+  </button>
+  <button
+    (click)="sortFeedbacks()"
+    style="margin-left: 4px; padding: 4px 10px; border-radius: 4px; border: none; background: #28a745; color: #fff; cursor: pointer;"
+  >
+    Sort
+  </button>
+</div>
 
-        </tr>
-    </tbody>
+<table border="1" style="border-collapse: collapse; width: 90%; margin: auto; font-family: Arial, sans-serif;">
+  <thead style="background: #f2f2f2;">
+    <tr>
+      <th style="padding: 8px;">ID</th>
+      <th style="padding: 8px;">Course Name</th>
+      <th style="padding: 8px;">Instructor Name</th>
+      <th style="padding: 8px;">Start Date</th>
+      <th colspan="2" style="padding: 8px;">Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let f of filteredFeedbacks; let i = index" [style.background]="i%2==0 ? '#fff' : '#fafafa'">
+      <td style="padding: 8px; text-align: center;">{{f.id}}</td>
+      <td style="padding: 8px;">{{f.courseName}}</td>
+      <td style="padding: 8px;">{{f.instructorName}}</td>
+      <td style="padding: 8px; text-align: center;">{{f.startDate}}</td>
+      <td style="padding: 8px; text-align: center;">
+        <button (click)="deleteFeedback(f.id)" style="background: #dc3545; color: #fff; border: none; border-radius: 4px; padding: 3px 8px; cursor:pointer;">Delete</button>
+      </td>
+      <td style="padding: 8px; text-align: center;">
+        <button (click)="updateFeedback(f.id)" style="background: #ffc107; color: #333; border: none; border-radius: 4px; padding: 3px 8px; cursor:pointer;">Update</button>
+      </td>
+    </tr>
+  </tbody>
 </table>
