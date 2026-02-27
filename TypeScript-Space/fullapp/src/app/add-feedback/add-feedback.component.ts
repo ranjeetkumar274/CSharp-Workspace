@@ -25,7 +25,6 @@ export class AddFeedbackComponent implements OnInit{
   constructor(public ser: FeedbackService, public rt: Router, public ar: ActivatedRoute){}
 
   ngOnInit(): void {
-      this.submitted = false;
       this.ar.params.subscribe(res =>{
         if(res['id']){
           this.isEditMode = true;

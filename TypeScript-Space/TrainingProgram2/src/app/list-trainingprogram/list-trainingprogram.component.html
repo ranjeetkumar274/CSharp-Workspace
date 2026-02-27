@@ -1,0 +1,47 @@
+<h2>Training Programs List</h2>
+
+<input type="text" [(ngModel)]="searchTerm"/>
+<button (click)="searchByName()">Search</button>
+
+<select (change)="sortByName()" [(ngModel)]="sortTerm">
+    <option value="asc" >Ascending</option>
+    <option value="desc">Descending</option>
+</select>
+
+
+<select (change)="searchByRange()" [(ngModel)]="rangeTerm">
+    <option value="o1" >1-50</option>
+    <option value="o2">51-100</option>
+    <option value="o3">>101</option>
+</select>
+
+<table border="1">
+    <thead>
+        <th>ID</th>
+        <th>Program Name</th>
+        <th>Department</th>
+        <th>Description</th>
+        <th>Is Active</th>
+        <th>Start Date</th>
+        <th>End Date</th>
+        <th>Trainer Name</th>
+        <th>Participants Count</th>
+        <th>Actions</th>
+    </thead>
+    <tbody>
+        <tr *ngFor="let p of programs">
+            <td>{{p.id}}</td>
+            <td>{{p.programName}}</td>
+            <td>{{p.department}}</td>
+            <td>{{p.description}}</td>
+            <td>{{p.isActive}}</td>
+            <td>{{p.startDate}}</td>
+            <td>{{p.endDate}}</td>
+            <td>{{p.trainerName}}</td>
+            <td>{{p.participantCount}}</td>
+            <td><button (click)="deleteProgram(p.id)">Delete</button>
+            <button (click)="updateProgram(p.id)">Update</button></td>
+        </tr>
+    </tbody>
+    <h2>{{total | currency:("INR")}}</h2>
+</table>

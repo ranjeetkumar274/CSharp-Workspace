@@ -1,0 +1,41 @@
+<h2>Add Ground Form</h2>
+
+<form (ngSubmit)="addGround()">
+    <div>
+        <label>Ground Name: </label>
+        <input name="groundName" id="groundName" [(ngModel)]="g.groundName" required>
+        <div class="error-message" *ngIf="formSubmitted && !g.groundName">Ground Name is required</div>
+    </div>
+
+        <div>
+        <label>Location: </label>
+        <input name="location" id="location" [(ngModel)]="g.location" required>
+        <div class="error-message" *ngIf="formSubmitted && !g.location">Location is required</div>
+    </div>
+
+        <div>
+        <label>Capacity: </label>
+        <input name="capacity" id="capacity" [(ngModel)]="g.capacity" required>
+        <div class="error-message" *ngIf="formSubmitted && !g.capacity">Capacity is required</div>
+    </div>
+
+        <div>
+        <label>Status: </label>
+        <input name="status" id="status" [(ngModel)]="g.status" required>
+        <div class="error-message" *ngIf="formSubmitted && !g.status">Status is required</div>
+    </div>
+
+        <div>
+        <label>Establish Date: </label>
+        <input name="establishedOn" id="establishedOn" [(ngModel)]="g.establishedOn" required>
+        <div class="error-message" *ngIf="formSubmitted && !g.establishedOn">Established Date is required</div>
+    </div>
+
+        <div>
+        <label>Manager Name: </label>
+        <input name="managerName" id="managerName" [(ngModel)]="g.managerName" required>
+        <div class="error-message" *ngIf="formSubmitted && !g.managerName">Manager Name is required</div>
+    </div>
+
+    <button type="submit">Add</button>
+</form>

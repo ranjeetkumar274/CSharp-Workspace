@@ -1,0 +1,24 @@
+<h2>Ground List</h2>
+
+<table>
+    <thead>
+        <th>Ground ID</th>
+        <th>Ground Name</th>
+        <th>Location</th>
+        <th>Capacity</th>
+        <th>Status</th>
+        <th>Establish Date</th>
+        <th>Manager Name</th>
+    </thead>
+    <tbody>
+        <tr *ngFor="let g of grounds">
+            <td>{{g.id}}</td>
+            <td>{{g.groundName}}</td>
+            <td>{{g.location}}</td>
+            <td>{{g.capacity}}</td>
+            <td>{{g.status}}</td>
+            <td>{{g.establishedOn}}</td>
+            <td>{{g.managerName}}</td>
+        </tr>
+    </tbody>
+</table>

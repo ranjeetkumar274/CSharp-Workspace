@@ -1,0 +1,75 @@
+<h2>Add Training Program</h2>
+
+   <div *ngIf="successMessage">
+    {{successMessage}}
+   </div>
+
+<form (ngSubmit)="addTrainingProgram()">
+
+
+
+     <div>
+        <label>Id: </label>
+        <input type="text" name="id" id="id" [(ngModel)]="tp.id"/>
+        <div class="error-message" *ngIf="formSubmitted && !tp.id" style="color: red;">Id is required</div>
+    </div>
+
+    <div>
+    <label>Program Name: </label>
+        <input type="text" name="programName" id="programName" [(ngModel)]="tp.programName"/>
+        <div class="error-message" *ngIf="formSubmitted && !tp.programName" style="color: rgb(226, 67, 67);">Program Name is required</div>
+    </div>
+
+    <div>
+        <label>Department: </label>
+        <input type="text" name="department" id="department" [(ngModel)]="tp.department"/>
+        <div class="error-message" *ngIf="formSubmitted && !tp.department" style="color: red;">Department is required</div>
+    </div>
+
+    <div>
+        <label>Description: </label>
+        <input type="text" name="description" id="description" [(ngModel)]="tp.description" readonly/>
+        <div class="error-message" *ngIf="formSubmitted && !tp.description" style="color: red;">Description is required</div>
+    </div>
+
+    <div>
+        <label>Status: </label>
+        <select name="isActive" [(ngModel)]="tp.isActive">
+        <option [ngValue]="true">Active</option>
+        <option [ngValue]="false">Inactive</option>
+        </select>
+        <div class="error-message" *ngIf="formSubmitted && !tp.isActive" style="color: red;">Active Status is required</div>
+    </div>
+
+    
+    <div>
+        <label>Start Date: </label>
+        <input type="text" name="startDate" id="startDate" [(ngModel)]="tp.startDate"/>
+        <div class="error-message" *ngIf="formSubmitted && !tp.startDate" style="color: red;">Start Date is required</div>
+    </div>
+
+    
+    <div>
+        <label>End Date: </label>
+        <input type="text" name="endDate" id="endDate" [(ngModel)]="tp.endDate"/>
+        <div class="error-message" *ngIf="formSubmitted && !tp.endDate" style="color: red;">End Date is required</div>
+    </div>
+
+    
+    <div>
+        <label>Participants Count: </label>
+        <input type="text" name="participantCount" id="participantCount" [(ngModel)]="tp.participantCount"/>
+        <div class="error-message" *ngIf="formSubmitted && !tp.participantCount" style="color: red;">Count is required</div>
+    </div>
+
+    
+    <div>
+        <label>Trainer Name: </label>
+        <input type="text" name="trainerName" id="trainerName" [(ngModel)]="tp.trainerName"/>
+        <div class="error-message" *ngIf="formSubmitted && !tp.trainerName" style="color: red;">Trainer Name is required</div>
+    </div>
+
+
+
+    <button type="submit">Add</button>
+</form>

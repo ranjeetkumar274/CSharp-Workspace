@@ -1,0 +1,45 @@
+<h2>Add Training Program</h2>
+
+<form (ngSubmit)="addTrainingPrograms()">
+
+    <div>
+        <label>Program Name: </label>
+        <input type="text" name="programName" id="programName" [(ngModel)]="tp.programName"/>
+        <div class="error-message" *ngIf="formSubmitted && !tp.programName" style="color: red;">Program Name is required</div>
+    </div>
+
+        <div>
+        <label>Department: </label>
+        <input type="text" name="department" id="department" [(ngModel)]="tp.department"/>
+        <div class="error-message" *ngIf="formSubmitted && !tp.department" style="color: red;">Department is required</div>
+    </div>
+
+        <div>
+        <label>Description: </label>
+        <input type="text" name="description" id="description" [(ngModel)]="tp.description"/>
+        <div class="error-message" *ngIf="formSubmitted && !tp.description" style="color: red;">Description is required</div>
+    </div>
+
+        <div>
+        <label>Status: </label>
+        <select name="isActive" [(ngModel)]="tp.isActive">
+        <option [ngValue]="true">Active</option>
+        <option [ngValue]="false">Inactive</option>
+        </select>
+        <div class="error-message" *ngIf="formSubmitted && !tp.isActive" style="color: red;">Active Status is required</div>
+    </div>
+
+        <div>
+        <label>Skill Level: </label>
+        <input type="text" name="skillLevel" id="skillLevel" [(ngModel)]="tp.skillLevel"/>
+        <div class="error-message" *ngIf="formSubmitted && tp.skillLevel != 'Beginner' && tp.skillLevel != 'Intermediate' && tp.skillLevel != 'Advanced'" style="color: red;">Skill Level is required</div>
+    </div>
+
+        <div>
+        <label>Tag: </label>
+        <input type="text" name="tags" id="tags" [(ngModel)]="tp.tags"/>
+        <div class="error-message" *ngIf="formSubmitted && tp.tags != 'mandatory' && tp.tags != 'certification'" style="color: red;">Tag is required(mandatory | certification)</div>
+    </div>
+
+    <button type="submit">Add</button>
+</form>

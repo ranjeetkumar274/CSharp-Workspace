@@ -1,0 +1,13 @@
+{
+  "trainingPrograms": [
+    {
+      "programId": 101,
+      "programName": "SocialAnnexure",
+      "department": "HR",
+      "description": "NONE",
+      "isActive": true,
+      "skillLevel": "Intermediate",
+      "tags": "mandatory"
+    }
+  ]
+}

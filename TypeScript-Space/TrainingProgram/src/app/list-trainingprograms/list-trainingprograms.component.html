@@ -1,0 +1,42 @@
+<input type="text" name="searchTerm" [(ngModel)]="searchTerm"/>
+<button (click)="searchByName()">Search</button>
+<br>
+<button (click)="sortBySkill()">SortBySkill</button>
+
+
+<select (change)="searchByStatus()" [(ngModel)]="ss">
+    <option [ngValue]=true>Active</option>
+    <option [ngValue]=false>Inactive</option>
+</select>
+
+<h2>TraingPrograms List</h2>
+
+<table border="1">
+    <thead>
+        <th>Program ID</th>
+        <th>Program Name</th>
+        <th>Department</th>
+        <th>Description</th>
+        <th>Active Stattus</th>
+        <th>Skill Level</th>
+        <th>Tags</th>
+        <th>Actions</th>
+    </thead>
+    <tbody>
+        <tr *ngFor="let t of filteredTrainings">
+            <td>{{t.id}}</td>
+            <td>{{t.programName}}</td>
+            <td>{{t.department}}</td>
+            <td>{{t.description}}</td>
+            <td>{{t.isActive}}</td>
+            <td>{{t.skillLevel}}</td>
+            <td>{{t.tags}}</td>
+            <td>
+            <button (click)="deleteTrainingProgram(t.id)">Delete</button>
+            <button (click)="updateTrainingProgram(t.id)">Update</button>
+        </td>
+        </tr>
+    </tbody>
+</table>
+
+

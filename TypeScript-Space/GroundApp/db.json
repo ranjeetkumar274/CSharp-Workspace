@@ -1,0 +1,49 @@
+{
+  "grounds": [
+    {
+      "id": "101",
+      "groundName": "CSA",
+      "location": "GKP",
+      "capacity": 1300,
+      "status": "Available",
+      "establishedOn": "23:10:2026",
+      "managerName": "Ram Mohan"
+    },
+    {
+      "id": 0,
+      "groundName": "",
+      "location": "",
+      "capacity": 0,
+      "status": "",
+      "establishedOn": "",
+      "managerName": ""
+    },
+    {
+      "id": 0,
+      "groundName": "CSIT",
+      "location": "Mumbai",
+      "capacity": "14000",
+      "status": "Available",
+      "establishedOn": "25:08:2023",
+      "managerName": "Ubed Sharma"
+    },
+    {
+      "id": 0,
+      "groundName": "CSIT",
+      "location": "Mumbai",
+      "capacity": "14000",
+      "status": "Available",
+      "establishedOn": "25:08:2023",
+      "managerName": "Ubed Sharma"
+    },
+    {
+      "id": 0,
+      "groundName": "",
+      "location": "",
+      "capacity": 0,
+      "status": "",
+      "establishedOn": "",
+      "managerName": ""
+    }
+  ]
+}

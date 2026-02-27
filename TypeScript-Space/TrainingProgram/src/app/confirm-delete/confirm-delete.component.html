@@ -1,0 +1,27 @@
+<h1>
+    Delete Confirmation
+</h1>
+
+<label>Program Id</label>
+<h3>{{tp.id}}</h3>
+
+<label>Program Name</label>
+<h3>{{tp.programName}}</h3>
+
+<label>Description</label>
+<h3>{{tp.description}}</h3>
+
+<label>Department</label>
+<h3>{{tp.department}}</h3>
+
+<label>Status</label>
+<h3>{{tp.isActive}}</h3>
+
+<label>Skill Level</label>
+<h3>{{tp.skillLevel}}</h3>
+
+<label>Program Tag</label>
+<h3>{{tp.tags}}</h3>
+
+<button (click)="confirmDelete(tp.id)">Delete</button>
+<button (click)="cancelDelete()">Cancel</button>

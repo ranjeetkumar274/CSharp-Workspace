@@ -1,0 +1,49 @@
+{
+  "trainingPrograms": [
+    {
+      "id": 104,
+      "programName": "Manasa",
+      "department": "jkhkj",
+      "description": "hhkjh",
+      "isActive": false,
+      "skillLevel": "hjhkjh",
+      "tags": "khkj"
+    },
+    {
+      "id": 106,
+      "programName": "",
+      "department": "",
+      "description": "",
+      "isActive": false,
+      "skillLevel": "A",
+      "tags": ""
+    },
+    {
+      "id": 107,
+      "programName": "",
+      "department": "",
+      "description": "",
+      "isActive": false,
+      "skillLevel": "S",
+      "tags": ""
+    },
+    {
+      "id": 108,
+      "programName": "mngkjg",
+      "department": "",
+      "description": "",
+      "isActive": true,
+      "skillLevel": "",
+      "tags": ""
+    },
+    {
+      "id": 109,
+      "programName": "kjjhg",
+      "department": "gkjh",
+      "description": "kjgkj",
+      "isActive": true,
+      "skillLevel": "kjkjh",
+      "tags": "khkj"
+    }
+  ]
+}
