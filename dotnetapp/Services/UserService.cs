@@ -10,25 +10,25 @@ namespace dotnetapp.Services
 {
     public class UserService
     {
-        private readonly ApplicationDbContext cont;
-        private readonly IConfiguration config;
+        private readonly ApplicationDbContext _context;
+        private readonly IConfiguration _configuration;
 
         public UserService(ApplicationDbContext context, IConfiguration configuration)
         {
-            cont = context;
-            config = configuration;
+            _context = context;
+            _configuration = configuration;
         }
 
         public async Task<User> RegisterUserAsync(User user)
         {
-            cont.Users.Add(user);
-            await cont.SaveChangesAsync();
+            _context.Users.Add(user);
+            await _context.SaveChangesAsync();
             return user;
         }
 
-        public async Task<string> GenerateJwtTokenAsync(User user)
+        public string GenerateJwtToken(User user)
         {
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["JWT:Key"]));
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:Key"]));
             var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
             var claims = new[]
@@ -39,29 +39,29 @@ namespace dotnetapp.Services
             };
 
             var token = new JwtSecurityToken(
-                issuer: config["JWT:Issuer"],
-                audience: config["JWT:Audience"],
+                issuer: _configuration["JWT:Issuer"],
+                audience: _configuration["JWT:Audience"],
                 claims: claims,
                 expires: DateTime.UtcNow.AddDays(7),
                 signingCredentials: credentials
             );
 
-            return await Task.FromResult(new JwtSecurityTokenHandler().WriteToken(token));
+            return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
         public async Task<User> GetUserByEmailAsync(string email)
         {
-            return await cont.Users.FirstOrDefaultAsync(u => u.Email == email);
+            return await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
         }
 
         public async Task<List<User>> GetAllUsersAsync()
         {
-            return await cont.Users.ToListAsync();
+            return await _context.Users.ToListAsync();
         }
 
         public async Task<User> GetUserByIdAsync(long userId)
         {
-            return await cont.Users.FirstOrDefaultAsync(u => u.UserId == userId);
+            return await _context.Users.FirstOrDefaultAsync(u => u.UserId == userId);
         }
     }
 }

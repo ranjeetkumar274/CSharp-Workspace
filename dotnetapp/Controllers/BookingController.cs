@@ -29,12 +29,12 @@ namespace dotnetapp.Controllers
             return Ok(booking);
         }
 
-        [HttpGet("user/{UserId}")]
-        public async Task<IActionResult> GetBookingsByUserId(long UserId)
+        [HttpGet("user/{userId}")]
+        public async Task<IActionResult> GetBookingsByUserId(long userId)
         {
             try
             {
-                var bookings = await _bookingService.GetBookingsByUserIdAsync(UserId);
+                var bookings = await _bookingService.GetBookingsByUserIdAsync(userId);
                 return Ok(bookings);
             }
             catch (Exception)

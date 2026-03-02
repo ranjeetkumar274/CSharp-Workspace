@@ -7,34 +7,34 @@ namespace dotnetapp.Services
 {
     public class PartyHallService
     {
-        private readonly ApplicationDbContext cont;
+        private readonly ApplicationDbContext _context;
 
         public PartyHallService(ApplicationDbContext context)
         {
-            cont = context;
+            _context = context;
         }
 
         public async Task<IEnumerable<PartyHall>> GetAllPartyHallsAsync()
         {
-            return await cont.PartyHalls.ToListAsync();
+            return await _context.PartyHalls.ToListAsync();
         }
 
         public async Task<PartyHall> AddPartyHallAsync(PartyHall partyHall)
         {
-            bool exists = await cont.PartyHalls
+            bool exists = await _context.PartyHalls
                 .AnyAsync(p => p.HallName == partyHall.HallName);
 
             if (exists)
                 throw new PartyHallException("A party hall with the same name already exists");
 
-            cont.PartyHalls.Add(partyHall);
-            await cont.SaveChangesAsync();
+            _context.PartyHalls.Add(partyHall);
+            await _context.SaveChangesAsync();
             return partyHall;
         }
 
         public async Task<PartyHall> UpdatePartyHallAsync(long id, PartyHall partyHall)
         {
-            var existingHall = await cont.PartyHalls.FindAsync(id);
+            var existingHall = await _context.PartyHalls.FindAsync(id);
             if (existingHall == null) return null;
 
             existingHall.HallName = partyHall.HallName;
@@ -45,23 +45,23 @@ namespace dotnetapp.Services
             existingHall.Capacity = partyHall.Capacity;
             existingHall.Description = partyHall.Description;
 
-            await cont.SaveChangesAsync();
+            await _context.SaveChangesAsync();
             return existingHall;
         }
 
         public async Task<PartyHall> DeletePartyHallAsync(long id)
         {
-            var partyHall = await cont.PartyHalls.FindAsync(id);
+            var partyHall = await _context.PartyHalls.FindAsync(id);
             if (partyHall == null) return null;
 
-            cont.PartyHalls.Remove(partyHall);
-            await cont.SaveChangesAsync();
+            _context.PartyHalls.Remove(partyHall);
+            await _context.SaveChangesAsync();
             return partyHall;
         }
 
         public async Task<PartyHall> GetPartyHallByIdAsync(long id)
         {
-            return await cont.PartyHalls.FirstOrDefaultAsync(p => p.PartyHallId == id);
+            return await _context.PartyHalls.FirstOrDefaultAsync(p => p.PartyHallId == id);
         }
     }
 }

@@ -38,7 +38,7 @@ namespace dotnetapp.Controllers
                 if (user == null || user.Password != model.Password)
                     return Unauthorized(new { message = "Invalid email or password." });
 
-                var token = await _userService.GenerateJwtTokenAsync(user);
+                var token = _userService.GenerateJwtToken(user);
                 return Ok(new { token });
             }
             catch (Exception)

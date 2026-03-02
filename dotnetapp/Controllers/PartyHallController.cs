@@ -10,17 +10,17 @@ namespace dotnetapp.Controllers
     [Authorize]
     public class PartyHallController : ControllerBase
     {
-        private readonly PartyHallService partySer;
+        private readonly PartyHallService _partyHallService;
 
         public PartyHallController(PartyHallService partyHallService)
         {
-            partySer = partyHallService;
+            _partyHallService = partyHallService;
         }
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<PartyHall>>> Get()
         {
-            var partyHalls = await partySer.GetAllPartyHallsAsync();
+            var partyHalls = await _partyHallService.GetAllPartyHallsAsync();
             return Ok(partyHalls);
         }
 
@@ -34,7 +34,7 @@ namespace dotnetapp.Controllers
 
                 partyHall.Bookings = null;
 
-                var created = await partySer.AddPartyHallAsync(partyHall);
+                var created = await _partyHallService.AddPartyHallAsync(partyHall);
                 return StatusCode(201, created);
             }
             catch (Exception)
@@ -43,15 +43,15 @@ namespace dotnetapp.Controllers
             }
         }
 
-        [HttpPut("{PartyHallId}")]
-        public async Task<IActionResult> Put(long PartyHallId, [FromBody] PartyHall partyHall)
+        [HttpPut("{partyHallId}")]
+        public async Task<IActionResult> Put(long partyHallId, [FromBody] PartyHall partyHall)
         {
             try
             {
-                if (partyHall == null || PartyHallId != partyHall.PartyHallId)
+                if (partyHall == null || partyHallId != partyHall.PartyHallId)
                     return BadRequest("Invalid party hall data or ID mismatch");
 
-                var updated = await partySer.UpdatePartyHallAsync(PartyHallId, partyHall);
+                var updated = await _partyHallService.UpdatePartyHallAsync(partyHallId, partyHall);
                 if (updated == null)
                     return NotFound();
 
@@ -63,12 +63,12 @@ namespace dotnetapp.Controllers
             }
         }
 
-        [HttpDelete("{PartyHallId}")]
-        public async Task<IActionResult> Delete(long PartyHallId)
+        [HttpDelete("{partyHallId}")]
+        public async Task<IActionResult> Delete(long partyHallId)
         {
             try
             {
-                var deleted = await partySer.DeletePartyHallAsync(PartyHallId);
+                var deleted = await _partyHallService.DeletePartyHallAsync(partyHallId);
                 if (deleted == null)
                     return NotFound();
 
@@ -80,12 +80,12 @@ namespace dotnetapp.Controllers
             }
         }
 
-        [HttpGet("{PartyHallId}")]
-        public async Task<ActionResult<PartyHall>> Get(long PartyHallId)
+        [HttpGet("{partyHallId}")]
+        public async Task<ActionResult<PartyHall>> Get(long partyHallId)
         {
             try
             {
-                var partyHall = await partySer.GetPartyHallByIdAsync(PartyHallId);
+                var partyHall = await _partyHallService.GetPartyHallByIdAsync(partyHallId);
                 if (partyHall == null)
                     return NotFound();
 

@@ -6,21 +6,21 @@ namespace dotnetapp.Services
 {
     public class BookingService
     {
-        private readonly ApplicationDbContext cont;
+        private readonly ApplicationDbContext _context;
 
         public BookingService(ApplicationDbContext context)
         {
-            cont = context;
+            _context = context;
         }
 
         public async Task<Booking> GetBookingByIdAsync(long id)
         {
-            return await cont.Bookings.FirstOrDefaultAsync(b => b.BookingId == id);
+            return await _context.Bookings.FirstOrDefaultAsync(b => b.BookingId == id);
         }
 
         public async Task<IEnumerable<Booking>> GetBookingsByUserIdAsync(long userId)
         {
-            return await cont.Bookings
+            return await _context.Bookings
                 .Include(b => b.PartyHall)
                 .Include(b => b.User)
                 .Where(b => b.UserId == userId)
@@ -29,7 +29,7 @@ namespace dotnetapp.Services
 
         public async Task<IEnumerable<Booking>> GetAllBookingsAsync()
         {
-            return await cont.Bookings
+            return await _context.Bookings
                 .Include(b => b.PartyHall)
                 .Include(b => b.User)
                 .ToListAsync();
@@ -37,29 +37,29 @@ namespace dotnetapp.Services
 
         public async Task<Booking> AddBookingAsync(Booking booking)
         {
-            cont.Bookings.Add(booking);
-            await cont.SaveChangesAsync();
+            _context.Bookings.Add(booking);
+            await _context.SaveChangesAsync();
             return booking;
         }
 
         public async Task DeleteBookingAsync(long id)
         {
-            var booking = await cont.Bookings.FirstOrDefaultAsync(b => b.BookingId == id);
+            var booking = await _context.Bookings.FirstOrDefaultAsync(b => b.BookingId == id);
             if (booking != null)
             {
-                cont.Bookings.Remove(booking);
-                await cont.SaveChangesAsync();
+                _context.Bookings.Remove(booking);
+                await _context.SaveChangesAsync();
             }
         }
 
         public async Task UpdateBookingStatusAsync(long id, string newStatus)
         {
-            var booking = await cont.Bookings.FirstOrDefaultAsync(b => b.BookingId == id);
+            var booking = await _context.Bookings.FirstOrDefaultAsync(b => b.BookingId == id);
             if (booking == null)
                 throw new Exception("Booking not found.");
 
             booking.Status = newStatus;
-            await cont.SaveChangesAsync();
+            await _context.SaveChangesAsync();
         }
     }
 }
