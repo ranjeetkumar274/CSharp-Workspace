@@ -1,100 +1,67 @@
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 using dotnetapp.Models;
 using dotnetapp.Data;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 
 namespace dotnetapp.Services
 {
     public class UserService
     {
         private readonly ApplicationDbContext cont;
+        private readonly IConfiguration config;
 
-        public UserService(ApplicationDbContext context)
+        public UserService(ApplicationDbContext context, IConfiguration configuration)
         {
             cont = context;
+            config = configuration;
         }
 
-     
-        public async Task<IEnumerable<User>> GetAllUsersAsync()
-        {
-            return await cont.Users.ToListAsync();
-        }
-
-      
-        public async Task<User?> GetUserByIdAsync(long id)
-        {
-            return await cont.Users.FindAsync(id);
-        }
-
-        
         public async Task<User> RegisterUserAsync(User user)
         {
-           
-            bool emailExists = await cont.Users
-                .AnyAsync(u => u.Email == user.Email);
-
-            if (emailExists)
-                throw new Exception("Email is already registered.");
-
-            
-            bool usernameExists = await cont.Users
-                .AnyAsync(u => u.Username == user.Username);
-
-            if (usernameExists)
-                throw new Exception("Username is already taken.");
-
-           
-            if (string.IsNullOrEmpty(user.UserRole))
-                user.UserRole = "User";
-
             cont.Users.Add(user);
             await cont.SaveChangesAsync();
             return user;
         }
 
-       
-        public async Task<User?> LoginAsync(string email, string password)
+        public async Task<string> GenerateJwtTokenAsync(User user)
         {
-            var user = await cont.Users
-                .FirstOrDefaultAsync(u => u.Email == email && u.Password == password);
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["JWT:Key"]));
+            var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
-            if (user == null)
-                throw new Exception("Invalid email or password.");
+            var claims = new[]
+            {
+                new Claim(ClaimTypes.Email, user.Email),
+                new Claim(ClaimTypes.Role, user.UserRole),
+                new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString())
+            };
 
-            return user;
+            var token = new JwtSecurityToken(
+                issuer: config["JWT:Issuer"],
+                audience: config["JWT:Audience"],
+                claims: claims,
+                expires: DateTime.UtcNow.AddDays(7),
+                signingCredentials: credentials
+            );
+
+            return await Task.FromResult(new JwtSecurityTokenHandler().WriteToken(token));
         }
 
-    
-        public async Task<User?> UpdateUserAsync(long id, User updatedUser)
+        public async Task<User> GetUserByEmailAsync(string email)
         {
-            var user = await cont.Users.FindAsync(id);
-            if (user == null) return null;
-
-          
-            bool emailTaken = await cont.Users
-                .AnyAsync(u => u.Email == updatedUser.Email && u.UserId != id);
-
-            if (emailTaken)
-                throw new Exception("Email is already used by another account.");
-
-            user.Email = updatedUser.Email;
-            user.Username = updatedUser.Username;
-            user.Password = updatedUser.Password;
-            user.MobileNumber = updatedUser.MobileNumber;
-            user.UserRole = updatedUser.UserRole;
-
-            await cont.SaveChangesAsync();
-            return user;
+            return await cont.Users.FirstOrDefaultAsync(u => u.Email == email);
         }
 
-       
-        public async Task<bool> DeleteUserAsync(long id)
+        public async Task<List<User>> GetAllUsersAsync()
         {
-            var user = await cont.Users.FindAsync(id);
-            if (user == null) return false;
+            return await cont.Users.ToListAsync();
+        }
 
-            cont.Users.Remove(user);
-            await cont.SaveChangesAsync();
-            return true;
+        public async Task<User> GetUserByIdAsync(long userId)
+        {
+            return await cont.Users.FirstOrDefaultAsync(u => u.UserId == userId);
         }
     }
 }

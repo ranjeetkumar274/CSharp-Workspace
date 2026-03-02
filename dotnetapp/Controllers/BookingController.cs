@@ -1,76 +1,115 @@
 using dotnetapp.Models;
 using dotnetapp.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace dotnetapp.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class BookingController : ControllerBase
     {
-        private readonly BookingService ser;
+        private readonly BookingService _bookingService;
+        private readonly UserService _userService;
 
-        public BookingController(BookingService bookingService)
+        public BookingController(BookingService bookingService, UserService userService)
         {
-            ser = bookingService;
+            _bookingService = bookingService;
+            _userService = userService;
         }
 
-        
-        [HttpGet]
-        public async Task<IActionResult> GetAllBookings()
+        [HttpGet("{bookingId}")]
+        public async Task<IActionResult> GetBooking(long bookingId)
         {
-            var bookings = await ser.GetAllBookingsAsync();
-            return Ok(bookings);
-        }
-
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetBookingById(long id)
-        {
-            var booking = await ser.GetBookingByIdAsync(id);
+            var booking = await _bookingService.GetBookingByIdAsync(bookingId);
             if (booking == null)
-                return NotFound(new { message = "Booking not found" });
+                return NotFound();
 
             return Ok(booking);
         }
 
-        [HttpPost]
-        public async Task<IActionResult> CreateBooking([FromBody] Booking booking)
+        [HttpGet("user/{UserId}")]
+        public async Task<IActionResult> GetBookingsByUserId(long UserId)
         {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-
             try
             {
-                var created = await ser.CreateBookingAsync(booking);
-                return CreatedAtAction(nameof(GetBookingById), new { id = created.BookingId }, created);
+                var bookings = await _bookingService.GetBookingsByUserIdAsync(UserId);
+                return Ok(bookings);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                return BadRequest(new { message = ex.Message });
+                return StatusCode(500, "Internal Server Error");
             }
         }
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateBooking(long id, [FromBody] Booking booking)
+        [HttpGet]
+        public async Task<IActionResult> GetAllBookings()
         {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-
-            var updated = await ser.UpdateBookingAsync(id, booking);
-            if (updated == null)
-                return NotFound(new { message = "Booking not found" });
-
-            return Ok(updated);
+            try
+            {
+                var bookings = await _bookingService.GetAllBookingsAsync();
+                return Ok(bookings);
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, "Internal Server Error");
+            }
         }
 
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteBooking(long id)
+        [HttpPost]
+        public async Task<IActionResult> AddBooking([FromBody] Booking booking)
         {
-            var result = await ser.DeleteBookingAsync(id);
-            if (!result)
-                return NotFound(new { message = "Booking not found" });
+            try
+            {
+                if (booking == null)
+                    return BadRequest("Booking data is null");
 
-            return Ok(new { message = "Booking deleted successfully" });
+                if (booking.UserId > 0)
+                    booking.User = null;
+
+                var addedBooking = await _bookingService.AddBookingAsync(booking);
+
+                var user = await _userService.GetUserByIdAsync(booking.UserId);
+                if (user == null)
+                    return BadRequest(new { message = "User not found" });
+
+                return Ok(new { Booking = addedBooking, User = user });
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, "Internal Server Error");
+            }
+        }
+
+        [HttpDelete("{bookingId}")]
+        public async Task<IActionResult> DeleteBooking(long bookingId)
+        {
+            try
+            {
+                await _bookingService.DeleteBookingAsync(bookingId);
+                return Ok(new { message = "Booking deleted successfully" });
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, "Internal Server Error");
+            }
+        }
+
+        [HttpPut("{bookingId}")]
+        public async Task<IActionResult> UpdateBooking(long bookingId, [FromBody] Booking updatedBooking)
+        {
+            if (bookingId != updatedBooking.BookingId)
+                return BadRequest("Booking ID mismatch");
+
+            var existingBooking = await _bookingService.GetBookingByIdAsync(bookingId);
+            if (existingBooking == null)
+                return NotFound();
+
+            await _bookingService.UpdateBookingStatusAsync(bookingId, updatedBooking.Status);
+
+            var updated = await _bookingService.GetBookingByIdAsync(bookingId);
+            return Ok(updated);
         }
     }
 }

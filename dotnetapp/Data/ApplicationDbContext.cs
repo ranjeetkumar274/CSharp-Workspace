@@ -17,6 +17,14 @@ namespace dotnetapp.Data
         public DbSet<PartyHall> PartyHalls {get;set;}
         public DbSet<Booking> Bookings {get;set;}
         public DbSet<Review> Reviews {get;set;}
-        
+
+        // protected override void OnModelCreating(ModelBuilder modelBuilder)
+        // {
+        //     base.OnModelCreating(modelBuilder);
+
+        //     modelBuilder.Entity<Booking>()
+        //         .Property(b => b.BookingId)
+        //         .ValueGeneratedOnAdd();
+        // }
     }
 }

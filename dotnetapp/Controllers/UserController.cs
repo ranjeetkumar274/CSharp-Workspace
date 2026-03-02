@@ -4,101 +4,47 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace dotnetapp.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api")]
     [ApiController]
     public class UserController : ControllerBase
     {
-        private readonly UserService ser;
+        private readonly UserService _userService;
 
         public UserController(UserService userService)
         {
-            ser = userService;
+            _userService = userService;
         }
 
-        
-        [HttpGet]
-        public async Task<IActionResult> GetAllUsers()
-        {
-            var users = await ser.GetAllUsersAsync();
-            return Ok(users);
-        }
-
-       
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetUserById(long id)
-        {
-            var user = await ser.GetUserByIdAsync(id);
-            if (user == null)
-                return NotFound(new { message = "User not found" });
-
-            return Ok(user);
-        }
-
-    
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] User user)
         {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
+            var existingUser = await _userService.GetUserByEmailAsync(user.Email);
+            if (existingUser != null)
+                return Conflict(new { message = "User already exists." });
 
-            try
-            {
-                var created = await ser.RegisterUserAsync(user);
-                return CreatedAtAction(nameof(GetUserById), new { id = created.UserId }, created);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(new { message = ex.Message });
-            }
+            var registeredUser = await _userService.RegisterUserAsync(user);
+            return Ok(new { message = "Registration successful", userId = registeredUser.UserId });
         }
 
-    
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginModel model)
         {
             try
             {
-                var user = await ser.LoginAsync(model.Email, model.Password);
-                return Ok(new { message = "Login successful", user });
+                if (model == null)
+                    return BadRequest("Login data is null");
+
+                var user = await _userService.GetUserByEmailAsync(model.Email);
+                if (user == null || user.Password != model.Password)
+                    return Unauthorized(new { message = "Invalid email or password." });
+
+                var token = await _userService.GenerateJwtTokenAsync(user);
+                return Ok(new { token });
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                return BadRequest(new { message = ex.Message });
+                return StatusCode(500, "Internal Server Error");
             }
-        }
-
-        
-        [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateUser(long id, [FromBody] User user)
-        {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-
-            try
-            {
-                var updated = await ser.UpdateUserAsync(id, user);
-                if (updated == null)
-                    return NotFound(new { message = "User not found" });
-
-                return Ok(updated);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(new { message = ex.Message });
-            }
-        }
-
-     
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteUser(long id)
-        {
-            var result = await ser.DeleteUserAsync(id);
-            if (!result)
-                return NotFound(new { message = "User not found" });
-
-            return Ok(new { message = "User deleted successfully" });
         }
     }
 }
-
- 

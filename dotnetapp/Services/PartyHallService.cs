@@ -1,5 +1,6 @@
 using dotnetapp.Models;
 using dotnetapp.Data;
+using dotnetapp.Exceptions;
 using Microsoft.EntityFrameworkCore;
 
 namespace dotnetapp.Services
@@ -13,66 +14,54 @@ namespace dotnetapp.Services
             cont = context;
         }
 
-        
         public async Task<IEnumerable<PartyHall>> GetAllPartyHallsAsync()
         {
-            return await cont.PartyHalls
-                .Include(p => p.Bookings)
-                .ToListAsync();
+            return await cont.PartyHalls.ToListAsync();
         }
 
-    
-        public async Task<PartyHall?> GetPartyHallByIdAsync(long id)
+        public async Task<PartyHall> AddPartyHallAsync(PartyHall partyHall)
         {
-            return await cont.PartyHalls
-                .Include(p => p.Bookings)
-                .FirstOrDefaultAsync(p => p.PartyHallId == id);
-        }
-
-        
-        public async Task<PartyHall> CreatePartyHallAsync(PartyHall partyHall)
-        {
-           
             bool exists = await cont.PartyHalls
                 .AnyAsync(p => p.HallName == partyHall.HallName);
 
             if (exists)
-                throw new Exception("A Party Hall with this name already exists.");
-
-            partyHall.HallAvailableStatus = "Available"; 
+                throw new PartyHallException("A party hall with the same name already exists");
 
             cont.PartyHalls.Add(partyHall);
             await cont.SaveChangesAsync();
             return partyHall;
         }
 
-        
-        public async Task<PartyHall?> UpdatePartyHallAsync(long id, PartyHall updatedHall)
+        public async Task<PartyHall> UpdatePartyHallAsync(long id, PartyHall partyHall)
+        {
+            var existingHall = await cont.PartyHalls.FindAsync(id);
+            if (existingHall == null) return null;
+
+            existingHall.HallName = partyHall.HallName;
+            existingHall.HallImageUrl = partyHall.HallImageUrl;
+            existingHall.HallLocation = partyHall.HallLocation;
+            existingHall.HallAvailableStatus = partyHall.HallAvailableStatus;
+            existingHall.Price = partyHall.Price;
+            existingHall.Capacity = partyHall.Capacity;
+            existingHall.Description = partyHall.Description;
+
+            await cont.SaveChangesAsync();
+            return existingHall;
+        }
+
+        public async Task<PartyHall> DeletePartyHallAsync(long id)
         {
             var partyHall = await cont.PartyHalls.FindAsync(id);
             if (partyHall == null) return null;
 
-            partyHall.HallName = updatedHall.HallName;
-            partyHall.HallImageUrl = updatedHall.HallImageUrl;
-            partyHall.HallLocation = updatedHall.HallLocation;
-            partyHall.HallAvailableStatus = updatedHall.HallAvailableStatus;
-            partyHall.Price = updatedHall.Price;
-            partyHall.Capacity = updatedHall.Capacity;
-            partyHall.Description = updatedHall.Description;
-
+            cont.PartyHalls.Remove(partyHall);
             await cont.SaveChangesAsync();
             return partyHall;
         }
 
-        
-        public async Task<bool> DeletePartyHallAsync(long id)
+        public async Task<PartyHall> GetPartyHallByIdAsync(long id)
         {
-            var partyHall = await cont.PartyHalls.FindAsync(id);
-            if (partyHall == null) return false;
-
-            cont.PartyHalls.Remove(partyHall);
-            await cont.SaveChangesAsync();
-            return true;
+            return await cont.PartyHalls.FirstOrDefaultAsync(p => p.PartyHallId == id);
         }
     }
 }

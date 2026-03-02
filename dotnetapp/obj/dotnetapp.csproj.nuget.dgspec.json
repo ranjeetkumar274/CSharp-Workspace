@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "/home/coder/project/workspace/dotnetapp/dotnetapp.csproj": {}
+    "/workspaces/CSharp-Workspace/dotnetapp/dotnetapp.csproj": {}
   },
   "projects": {
-    "/home/coder/project/workspace/dotnetapp/dotnetapp.csproj": {
+    "/workspaces/CSharp-Workspace/dotnetapp/dotnetapp.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/coder/project/workspace/dotnetapp/dotnetapp.csproj",
+        "projectUniqueName": "/workspaces/CSharp-Workspace/dotnetapp/dotnetapp.csproj",
         "projectName": "dotnetapp",
-        "projectPath": "/home/coder/project/workspace/dotnetapp/dotnetapp.csproj",
-        "packagesPath": "/home/coder/.nuget/packages/",
-        "outputPath": "/home/coder/project/workspace/dotnetapp/obj/",
+        "projectPath": "/workspaces/CSharp-Workspace/dotnetapp/dotnetapp.csproj",
+        "packagesPath": "/home/codespace/.nuget/packages/",
+        "outputPath": "/workspaces/CSharp-Workspace/dotnetapp/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "/home/coder/.nuget/NuGet/NuGet.Config"
+          "/home/codespace/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net6.0"
@@ -32,7 +32,13 @@
           "warnAsError": [
             "NU1605"
           ]
-        }
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        },
+        "SdkAnalysisLevel": "10.0.100"
       },
       "frameworks": {
         "net6.0": {
@@ -45,6 +51,10 @@
             "Microsoft.AspNetCore.Identity.EntityFrameworkCore": {
               "target": "Package",
               "version": "[6.0.0, )"
+            },
+            "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[6.0.6, )"
             },
             "Microsoft.EntityFrameworkCore.Design": {
               "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
@@ -81,6 +91,10 @@
             "Swashbuckle.AspNetCore": {
               "target": "Package",
               "version": "[6.2.3, )"
+            },
+            "System.IdentityModel.Tokens.Jwt": {
+              "target": "Package",
+              "version": "[6.*, )"
             }
           },
           "imports": [
@@ -102,7 +116,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/6.0.428/RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/10.0.100/RuntimeIdentifierGraph.json"
         }
       }
     }

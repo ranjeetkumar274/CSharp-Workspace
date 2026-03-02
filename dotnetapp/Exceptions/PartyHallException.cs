@@ -5,8 +5,8 @@ using System.Threading.Tasks;
 
 namespace dotnetapp.Exceptions
 {
-    public class PartyHallException
+    public class PartyHallException : Exception
     {
-        
+        public PartyHallException(string message) : base(message) { }
     }
 }
