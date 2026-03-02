@@ -6,73 +6,60 @@ namespace dotnetapp.Services
 {
     public class BookingService
     {
-        private readonly ApplicationDbContext cont;
+        private readonly ApplicationDbContext _context;
 
         public BookingService(ApplicationDbContext context)
         {
-            cont = context;
+            _context = context;
+        }
+
+        public async Task<Booking> GetBookingByIdAsync(long id)
+        {
+            return await _context.Bookings.FirstOrDefaultAsync(b => b.BookingId == id);
+        }
+
+        public async Task<IEnumerable<Booking>> GetBookingsByUserIdAsync(long userId)
+        {
+            return await _context.Bookings
+                .Include(b => b.PartyHall)
+                .Include(b => b.User)
+                .Where(b => b.UserId == userId)
+                .ToListAsync();
         }
 
         public async Task<IEnumerable<Booking>> GetAllBookingsAsync()
         {
-            return await cont.Bookings
-                .Include(b => b.User)
+            return await _context.Bookings
                 .Include(b => b.PartyHall)
+                .Include(b => b.User)
                 .ToListAsync();
         }
 
-        public async Task<Booking?> GetBookingByIdAsync(long id)
+        public async Task<Booking> AddBookingAsync(Booking booking)
         {
-            return await cont.Bookings
-                .Include(b => b.User)
-                .Include(b => b.PartyHall)
-                .FirstOrDefaultAsync(b => b.BookingId == id);
-        }
-
-        public async Task<Booking> CreateBookingAsync(Booking booking)
-        {
-
-            bool isAvailable = !await cont.Bookings.AnyAsync(b =>
-                b.PartyHallId == booking.PartyHallId &&
-                b.Status != "Cancelled" &&
-                b.FromDate < booking.ToDate &&
-                b.ToDate > booking.FromDate);
-
-            if (!isAvailable)
-                throw new Exception("Party Hall is not available for the selected dates.");
-
-            booking.Status = "Pending";
-
-            cont.Bookings.Add(booking);
-            await cont.SaveChangesAsync();
+            _context.Bookings.Add(booking);
+            await _context.SaveChangesAsync();
             return booking;
         }
 
-        public async Task<Booking?> UpdateBookingAsync(long id, Booking updatedBooking)
+        public async Task DeleteBookingAsync(long id)
         {
-            var booking = await cont.Bookings.FindAsync(id);
-            if (booking == null) return null;
-
-            booking.NoOfPersons = updatedBooking.NoOfPersons;
-            booking.FromDate = updatedBooking.FromDate;
-            booking.ToDate = updatedBooking.ToDate;
-            booking.Status = updatedBooking.Status;
-            booking.TotalPrice = updatedBooking.TotalPrice;
-            booking.Address = updatedBooking.Address;
-            booking.PartyHallId = updatedBooking.PartyHallId;
-
-            await cont.SaveChangesAsync();
-            return booking;
+            var booking = await _context.Bookings.FirstOrDefaultAsync(b => b.BookingId == id);
+            if (booking != null)
+            {
+                _context.Bookings.Remove(booking);
+                await _context.SaveChangesAsync();
+            }
         }
 
-        public async Task<bool> DeleteBookingAsync(long id)
+        public async Task UpdateBookingStatusAsync(long id, string newStatus)
         {
-            var booking = await cont.Bookings.FindAsync(id);
-            if (booking == null) return false;
+            var booking = await _context.Bookings.FirstOrDefaultAsync(b => b.BookingId == id);
+            if (booking == null)
+                throw new Exception("Booking not found.");
 
-            cont.Bookings.Remove(booking);
-            await cont.SaveChangesAsync();
-            return true;
+            booking.Status = newStatus;
+            await _context.SaveChangesAsync();
         }
     }
 }

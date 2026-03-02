@@ -1,80 +1,100 @@
 using dotnetapp.Models;
 using dotnetapp.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace dotnetapp.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class PartyHallController : ControllerBase
     {
-        private readonly PartyHallService ser;
+        private readonly PartyHallService _partyHallService;
 
         public PartyHallController(PartyHallService partyHallService)
         {
-            ser = partyHallService;
+            _partyHallService = partyHallService;
         }
 
-       
         [HttpGet]
-        public async Task<IActionResult> GetAllPartyHalls()
+        public async Task<ActionResult<IEnumerable<PartyHall>>> Get()
         {
-            var halls = await ser.GetAllPartyHallsAsync();
-            return Ok(halls);
+            var partyHalls = await _partyHallService.GetAllPartyHallsAsync();
+            return Ok(partyHalls);
         }
 
-        
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetPartyHallById(long id)
-        {
-            var hall = await ser.GetPartyHallByIdAsync(id);
-            if (hall == null)
-                return NotFound(new { message = "Party Hall not found" });
-
-            return Ok(hall);
-        }
-
-       
         [HttpPost]
-        public async Task<IActionResult> CreatePartyHall([FromBody] PartyHall partyHall)
+        public async Task<IActionResult> Post([FromBody] PartyHall partyHall)
         {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-
             try
             {
-                var created = await ser.CreatePartyHallAsync(partyHall);
-                return CreatedAtAction(nameof(GetPartyHallById), new { id = created.PartyHallId }, created);
+                if (partyHall == null)
+                    return BadRequest("Party hall data is null");
+
+                partyHall.Bookings = null;
+
+                var created = await _partyHallService.AddPartyHallAsync(partyHall);
+                return StatusCode(201, created);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                return BadRequest(new { message = ex.Message });
+                return StatusCode(500, "Internal Server Error");
             }
         }
 
-        
-        [HttpPut("{id}")]
-        public async Task<IActionResult> UpdatePartyHall(long id, [FromBody] PartyHall partyHall)
+        [HttpPut("{partyHallId}")]
+        public async Task<IActionResult> Put(long partyHallId, [FromBody] PartyHall partyHall)
         {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
+            try
+            {
+                if (partyHall == null || partyHallId != partyHall.PartyHallId)
+                    return BadRequest("Invalid party hall data or ID mismatch");
 
-            var updated = await ser.UpdatePartyHallAsync(id, partyHall);
-            if (updated == null)
-                return NotFound(new { message = "Party Hall not found" });
+                var updated = await _partyHallService.UpdatePartyHallAsync(partyHallId, partyHall);
+                if (updated == null)
+                    return NotFound();
 
-            return Ok(updated);
+                return Ok(updated);
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, "Internal Server Error");
+            }
         }
 
-        
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeletePartyHall(long id)
+        [HttpDelete("{partyHallId}")]
+        public async Task<IActionResult> Delete(long partyHallId)
         {
-            var result = await ser.DeletePartyHallAsync(id);
-            if (!result)
-                return NotFound(new { message = "Party Hall not found" });
+            try
+            {
+                var deleted = await _partyHallService.DeletePartyHallAsync(partyHallId);
+                if (deleted == null)
+                    return NotFound();
 
-            return Ok(new { message = "Party Hall deleted successfully" });
+                return Ok(deleted);
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, "Internal Server Error");
+            }
+        }
+
+        [HttpGet("{partyHallId}")]
+        public async Task<ActionResult<PartyHall>> Get(long partyHallId)
+        {
+            try
+            {
+                var partyHall = await _partyHallService.GetPartyHallByIdAsync(partyHallId);
+                if (partyHall == null)
+                    return NotFound();
+
+                return Ok(partyHall);
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, "Internal Server Error");
+            }
         }
     }
 }

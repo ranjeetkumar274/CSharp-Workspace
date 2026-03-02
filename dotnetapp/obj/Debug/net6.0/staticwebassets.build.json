@@ -1,11 +1,1 @@
-{
-  "Version": 1,
-  "Hash": "U8QV0AgLv0/zpYnV/5bTGDRLLlf89C7QSmt0JML8CoA=",
-  "Source": "dotnetapp",
-  "BasePath": "_content/dotnetapp",
-  "Mode": "Default",
-  "ManifestType": "Build",
-  "ReferencedProjectsConfiguration": [],
-  "DiscoveryPatterns": [],
-  "Assets": []
-}
+{"Version":1,"Hash":"FqU7rXqNwxNhZ5O0e6Ikm+2sww573OI2G+sC1wmjBcg=","Source":"dotnetapp","BasePath":"/","Mode":"Root","ManifestType":"Build","ReferencedProjectsConfiguration":[],"DiscoveryPatterns":[],"Assets":[],"Endpoints":[]}

@@ -1,87 +1,75 @@
 using dotnetapp.Models;
 using dotnetapp.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace dotnetapp.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class ReviewController : ControllerBase
     {
-        private readonly ReviewService ser;
+        private readonly ReviewService _reviewService;
+        private readonly UserService _userService;
 
-        public ReviewController(ReviewService reviewService)
+        public ReviewController(ReviewService reviewService, UserService userService)
         {
-            ser = reviewService;
+            _reviewService = reviewService;
+            _userService = userService;
         }
 
-       
         [HttpGet]
         public async Task<IActionResult> GetAllReviews()
         {
-            var reviews = await ser.GetAllReviewsAsync();
-            return Ok(reviews);
+            try
+            {
+                var reviews = await _reviewService.GetAllReviewsAsync();
+                return Ok(reviews);
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, "Internal Server Error");
+            }
         }
 
-       
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetReviewById(int id)
+        [HttpGet("user/{userId}")]
+        public async Task<IActionResult> GetReviewsByUserId(long userId)
         {
-            var review = await ser.GetReviewByIdAsync(id);
-            if (review == null)
-                return NotFound(new { message = "Review not found" });
-
-            return Ok(review);
+            try
+            {
+                var reviews = await _reviewService.GetReviewsByUserIdAsync(userId);
+                return Ok(reviews);
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, "Internal Server Error");
+            }
         }
 
-       
         [HttpPost]
-        public async Task<IActionResult> CreateReview([FromBody] Review review)
+        public async Task<IActionResult> AddReview([FromBody] Review review)
         {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-
             try
             {
-                var created = await ser.CreateReviewAsync(review);
-                return CreatedAtAction(nameof(GetReviewById), new { id = created.ReviewId }, created);
+                if (review == null)
+                    return BadRequest("Review data is null");
+
+                if (review.User != null && review.User.UserId != review.UserId)
+                    review.User = null;
+
+                var addedReview = await _reviewService.AddReviewAsync(review);
+
+                var user = await _userService.GetUserByIdAsync(review.UserId);
+                if (user == null)
+                    return BadRequest(new { message = "User not found" });
+
+                return Ok(new { Review = addedReview, User = user });
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                return BadRequest(new { message = ex.Message });
+                return StatusCode(500, "Internal Server Error");
             }
-        }
-
-       
-        [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateReview(int id, [FromBody] Review review)
-        {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-
-            try
-            {
-                var updated = await ser.UpdateReviewAsync(id, review);
-                if (updated == null)
-                    return NotFound(new { message = "Review not found" });
-
-                return Ok(updated);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(new { message = ex.Message });
-            }
-        }
-
-   
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteReview(int id)
-        {
-            var result = await ser.DeleteReviewAsync(id);
-            if (!result)
-                return NotFound(new { message = "Review not found" });
-
-            return Ok(new { message = "Review deleted successfully" });
         }
     }
 }
