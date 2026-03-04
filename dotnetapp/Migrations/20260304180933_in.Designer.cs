@@ -12,8 +12,8 @@ using dotnetapp.Data;
 namespace dotnetapp.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260228050214_initialsetup")]
-    partial class initialsetup
+    [Migration("20260304180933_in")]
+    partial class @in
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -26,11 +26,11 @@ namespace dotnetapp.Migrations
 
             modelBuilder.Entity("dotnetapp.Models.Booking", b =>
                 {
-                    b.Property<long?>("BookingId")
+                    b.Property<long>("BookingId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bigint");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long?>("BookingId"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("BookingId"), 1L, 1);
 
                     b.Property<string>("Address")
                         .IsRequired()
