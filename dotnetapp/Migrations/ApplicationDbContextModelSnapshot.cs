@@ -24,11 +24,11 @@ namespace dotnetapp.Migrations
 
             modelBuilder.Entity("dotnetapp.Models.Booking", b =>
                 {
-                    b.Property<long?>("BookingId")
+                    b.Property<long>("BookingId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bigint");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long?>("BookingId"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("BookingId"), 1L, 1);
 
                     b.Property<string>("Address")
                         .IsRequired()
