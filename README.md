@@ -556,5 +556,39 @@ export class RegistrationComponent {
 <!-- ============================================================= -->
 
 
-
+📦dotnetapp
+ ┣ 📂Controllers
+ ┃ ┣ 📜BookingController.cs
+ ┃ ┣ 📜PartyHallController.cs
+ ┃ ┣ 📜ReviewController.cs
+ ┃ ┗ 📜UserController.cs
+ ┣ 📂Data
+ ┃ ┗ 📜ApplicationDbContext.cs
+ ┣ 📂Exceptions
+ ┃ ┗ 📜PartyHallException.cs
+ ┣ 📂Migrations
+ ┃ ┣ 📜20260304180933_in.Designer.cs
+ ┃ ┣ 📜20260304180933_in.cs
+ ┃ ┗ 📜ApplicationDbContextModelSnapshot.cs
+ ┣ 📂Models
+ ┃ ┣ 📜Booking.cs
+ ┃ ┣ 📜LoginModel.cs
+ ┃ ┣ 📜PartyHall.cs
+ ┃ ┣ 📜Review.cs
+ ┃ ┣ 📜User.cs
+ ┃ ┗ 📜UserRoles.cs
+ ┣ 📂Properties
+ ┃ ┗ 📜launchSettings.json
+ ┣ 📂Services
+ ┃ ┣ 📜BookingService.cs
+ ┃ ┣ 📜PartyHallService.cs
+ ┃ ┣ 📜ReviewService.cs
+ ┃ ┗ 📜UserService.cs
+ ┣ 📜.env.example
+ ┣ 📜Program.cs
+ ┣ 📜appsettings.Development.json
+ ┣ 📜appsettings.json
+ ┣ 📜dotnet-tools.json
+ ┣ 📜dotnetapp.csproj
+ ┗ 📜dotnetapp.sln
 
