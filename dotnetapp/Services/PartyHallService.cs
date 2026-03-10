@@ -21,16 +21,35 @@ namespace dotnetapp.Services
 
         public async Task<PartyHall> AddPartyHallAsync(PartyHall partyHall)
         {
+            if (string.IsNullOrWhiteSpace(partyHall.HallName))
+                throw new ArgumentException("HallName is required.");
+ 
+            if (string.IsNullOrWhiteSpace(partyHall.HallLocation))
+                throw new ArgumentException("HallLocation is required.");
+ 
+            if (string.IsNullOrWhiteSpace(partyHall.HallAvailableStatus))
+                throw new ArgumentException("HallAvailableStatus is required.");
+ 
+            if (partyHall.Price < 0)
+                throw new ArgumentException("Price must be a positive value.");
+ 
+            if (partyHall.Capacity < 1)
+                throw new ArgumentException("Capacity must be at least 1.");
+ 
+            if (string.IsNullOrWhiteSpace(partyHall.Description))
+                throw new ArgumentException("Description is required.");
+ 
             bool exists = await _context.PartyHalls
                 .AnyAsync(p => p.HallName == partyHall.HallName);
-
+ 
             if (exists)
                 throw new PartyHallException("A party hall with the same name already exists");
-
+ 
             _context.PartyHalls.Add(partyHall);
             await _context.SaveChangesAsync();
             return partyHall;
         }
+ 
 
         public async Task<PartyHall> UpdatePartyHallAsync(long id, PartyHall partyHall)
         {

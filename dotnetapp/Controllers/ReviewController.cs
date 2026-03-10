@@ -71,5 +71,19 @@ namespace dotnetapp.Controllers
                 return StatusCode(500, "Internal Server Error");
             }
         }
+
+        [HttpGet("partyHall/{partyHallId}")]
+       public async Task<IActionResult> GetReviewsByHallId(long partyHallId)
+        {
+            try
+            {
+                var reviews = await _reviewService.GetReviewsByPartyHallIdAsync(partyHallId);
+                return Ok(reviews);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = ex.Message });
+            }
+        }
     }
 }

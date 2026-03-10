@@ -35,11 +35,20 @@ namespace dotnetapp.Controllers
                     return BadRequest("Login data is null");
 
                 var user = await _userService.GetUserByEmailAsync(model.Email);
-                if (user == null || user.Password != model.Password)
+                 if (user == null || !BCrypt.Net.BCrypt.Verify(model.Password, user.Password))
+                {
                     return Unauthorized(new { message = "Invalid email or password." });
+                }
+                
 
                 var token = _userService.GenerateJwtToken(user);
-                return Ok(new { token });
+                return Ok(new
+                {
+                    token,
+                    userRole = user.UserRole,
+                    userId = user.UserId,
+                    passwordHashed = user.Password,
+                });
             }
             catch (Exception)
             {

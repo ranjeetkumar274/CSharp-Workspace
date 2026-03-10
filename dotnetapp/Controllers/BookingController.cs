@@ -58,29 +58,70 @@ namespace dotnetapp.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddBooking([FromBody] Booking booking)
+
+public async Task<IActionResult> AddBooking([FromBody] Booking booking)
+
+{
+
+    try
+
+    {
+
+        if (booking == null)
+
+            return BadRequest("Booking data is null");
+
+        if (booking.UserId > 0)
+
+            booking.User = null;
+
+        var existingBooking = await _bookingService.GetAllBookingsAsync();
+
+        var conflict = existingBooking.FirstOrDefault(b =>
+
+            b.PartyHallId == booking.PartyHallId &&
+
+            b.Status != "Cancelled" &&
+
+            booking.FromDate <= b.ToDate &&
+
+            booking.ToDate >= b.FromDate
+
+        );
+
+        if (conflict != null)
+
         {
-            try
+
+            return BadRequest(new
+
             {
-                if (booking == null)
-                    return BadRequest("Booking data is null");
 
-                if (booking.UserId > 0)
-                    booking.User = null;
+                message = "This hall is already booked for the selected dates."
 
-                var addedBooking = await _bookingService.AddBookingAsync(booking);
+            });
 
-                var user = await _userService.GetUserByIdAsync(booking.UserId);
-                if (user == null)
-                    return BadRequest(new { message = "User not found" });
-
-                return Ok(new { Booking = addedBooking, User = user });
-            }
-            catch (Exception)
-            {
-                return StatusCode(500, "Internal Server Error");
-            }
         }
+
+        var addedBooking = await _bookingService.AddBookingAsync(booking);
+
+        var user = await _userService.GetUserByIdAsync(booking.UserId);
+
+        return Ok(new { Booking = addedBooking, User = user });
+
+    }
+
+    catch (Exception)
+
+    {
+
+        return StatusCode(500, "Internal Server Error");
+
+    }
+
+}
+ 
+ 
 
         [HttpDelete("{bookingId}")]
         public async Task<IActionResult> DeleteBooking(long bookingId)

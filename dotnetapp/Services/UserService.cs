@@ -5,6 +5,7 @@ using dotnetapp.Models;
 using dotnetapp.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using BCrypt.Net; 
 
 namespace dotnetapp.Services
 {
@@ -21,10 +22,36 @@ namespace dotnetapp.Services
 
         public async Task<User> RegisterUserAsync(User user)
         {
+            if (string.IsNullOrWhiteSpace(user.Email))
+                throw new ArgumentException("Email is required.");
+ 
+            if (string.IsNullOrWhiteSpace(user.Password))
+                throw new ArgumentException("Password is required.");
+            if (user.Password.Length < 6)
+                throw new ArgumentException("Password must be at least 6 characters.");
+            if (user.Password.Length > 50)
+                throw new ArgumentException("Password must not exceed 50 characters.");
+ 
+            if (string.IsNullOrWhiteSpace(user.Username))
+                throw new ArgumentException("Username is required.");
+ 
+            if (string.IsNullOrWhiteSpace(user.MobileNumber))
+                throw new ArgumentException("MobileNumber is required.");
+            if (user.MobileNumber.Length != 10)
+                throw new ArgumentException("MobileNumber must not exceed 10 characters.");
+ 
+            if (!(user.UserRole.Equals("Admin")||user.UserRole.Equals("Customer")))
+                throw new ArgumentException("UserRole is required.");
+
+                
+
+            user.Password = BCrypt.Net.BCrypt.HashPassword(user.Password);
+ 
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
             return user;
         }
+ 
 
         public string GenerateJwtToken(User user)
         {

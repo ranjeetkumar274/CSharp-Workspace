@@ -35,12 +35,42 @@ namespace dotnetapp.Services
                 .ToListAsync();
         }
 
-        public async Task<Booking> AddBookingAsync(Booking booking)
+       public async Task<Booking> AddBookingAsync(Booking booking)
         {
+            if (booking.NoOfPersons < 1)
+                throw new ArgumentException("NoOfPersons must be at least 1.");
+            if (booking.NoOfPersons > 1500)
+                throw new ArgumentException("NoOfPersons must be less than or equal to capacity.");
+ 
+            if (booking.FromDate == default)
+                throw new ArgumentException("FromDate is required.");
+ 
+            if (booking.ToDate == default)
+                throw new ArgumentException("ToDate is required.");
+ 
+            if (booking.TotalPrice < 0)
+                throw new ArgumentException("Total Price must be a positive value.");
+ 
+            if (string.IsNullOrWhiteSpace(booking.Address))
+                throw new ArgumentException("Address is required.");
+ 
+            if (booking.UserId <= 0)
+                throw new ArgumentException("UserId is required.");
+            var userExists = await _context.Users.AnyAsync(u => u.UserId == booking.UserId);
+            if (!userExists)
+                throw new ArgumentException("User not found.");
+ 
+            if (booking.PartyHallId <= 0)
+                throw new ArgumentException("PartyHallId is required.");
+            var hallExists = await _context.PartyHalls.AnyAsync(p => p.PartyHallId == booking.PartyHallId);
+            if (!hallExists)
+                throw new ArgumentException("PartyHall not found.");
+ 
             _context.Bookings.Add(booking);
             await _context.SaveChangesAsync();
             return booking;
         }
+ 
 
         public async Task DeleteBookingAsync(long id)
         {
