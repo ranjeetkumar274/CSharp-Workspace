@@ -1,0 +1,23 @@
+<table border="1">
+  <thead>
+    <tr>
+      <td>Id</td>
+      <td>Brand</td>
+      <td>Model</td>
+      <td>Year</td>
+      <td>Actions</td>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let c of carss">
+      <td>{{c.id}}</td>
+      <td>{{c.brand}}</td>
+      <td>{{c.model}}</td>
+      <td>{{c.year}}</td>
+      <td>
+        <button (click)="confirmDelete(c.id)">Delete</button>
+        <button (click)="editCar(c.id)">Edit</button>
+      </td>
+    </tr>
+  </tbody>
+</table>

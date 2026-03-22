@@ -1,0 +1,17 @@
+
+<h2>Confirm Delete</h2>
+
+<label>Id: </label>
+<p>{{carr.id}}</p>
+
+<label>Brand: </label>
+<p>{{carr.brand}}</p>
+
+<label>Model: </label>
+<p>{{carr.model}}</p>
+
+<label>Year: </label>
+<p>{{carr.year}}</p>
+
+<button (click)="delete(carr.id)">Delete</button>
+<button (click)="cancelDelete()">Cancel</button>

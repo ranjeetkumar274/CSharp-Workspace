@@ -1,0 +1,21 @@
+<form>
+    <div>
+        <label>Brand: </label>
+        <input type="text" name="brand" id="brand" [(ngModel)]="carr.brand" required/>
+    </div>
+
+        <div>
+        <label>Model: </label>
+        <input type="text" name="model" id="model" [(ngModel)]="carr.model" required/>
+    </div>
+
+        <div>
+        <label>Year: </label>
+        <input type="text" name="year" id="year" [(ngModel)]="carr.year" required/>
+    </div>
+
+
+    <button (click)="addCar()">{{isEdit ? "Update" : "Add"}}</button>
+
+
+</form>

@@ -8,7 +8,7 @@ const routes: Routes = [
   {path: '', component: BudgetListComponent},
   {path: 'budgets', component: BudgetListComponent},
   // {path: 'delete-budget/:id', component: DeleteBudgetComponent},
-  // {path: 'add-budget', component: AddBudgetComponent},
+  {path: 'add-budget', component: AddBudgetComponent},
   {path: '**', component: BudgetListComponent}
 ];
 

@@ -1,0 +1,41 @@
+{
+  "cars": [
+    {
+      "id": "1",
+      "brand": "Mercedies",
+      "model": "1996",
+      "year": "2003"
+    },
+    {
+      "id": "2",
+      "brand": "BMW",
+      "model": "fgh",
+      "year": "1990"
+    },
+    {
+      "id": "jKe33QGGV44",
+      "brand": "dfghjk",
+      "model": "fgh,",
+      "year": "dfghj"
+    },
+    {
+      "id": "xXiqy2j2UEE",
+      "brand": "Audi",
+      "model": "fgh",
+      "year": "1990"
+    },
+    {
+      "id": "YSEszRhIypo",
+      "brand": "Audiiiii",
+      "model": "1996",
+      "year": "2003"
+    },
+    {
+      "id": "PTvpQXhd6JE",
+      "brand": "Ferrari",
+      "model": "1996",
+      "year": "2003"
+    }
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
+}
